@@ -1,0 +1,9 @@
+api_v0:
+    resource: "@AppBundle/Controller/V0"
+    type: annotation
+    prefix: /api/{_locale}/V0
+
+app:
+    resource: "@AppBundle/Controller"
+    type: annotation
+    prefix: /{_locale}

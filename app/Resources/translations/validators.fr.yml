@@ -1,0 +1,6 @@
+username.not_found: Code utilisateur inconnu
+password:
+    not_blank: Le mot de passe ne peut pas être vide
+    length: Le mot de passe doit comporter au moins {{ limit }} caractères
+    current.invalid: Le mot de passe courant est invalide
+    new.invalid: Le nouveau mot de passe est invalide

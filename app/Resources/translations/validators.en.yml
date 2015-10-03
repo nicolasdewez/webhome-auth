@@ -1,0 +1,6 @@
+username.not_found: Username not found
+password:
+    not_blank: Password musn't be blank
+    length: Password must be at least {{ limit }} characters long
+    current.invalid: Current password is not valid
+    new.invalid: New password is not valid
