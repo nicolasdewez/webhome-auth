@@ -18,9 +18,13 @@ class AppKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new FOS\RestBundle\FOSRestBundle(),
             new JMS\SerializerBundle\JMSSerializerBundle(),
+            new FOS\OAuthServerBundle\FOSOAuthServerBundle(),
+
             new AppBundle\AppBundle(),
+            new OAuthBundle\OAuthBundle(),
+
             new Ndewez\WebHome\CommonBundle\NdewezWebHomeCommonBundle(),
-            new Ndewez\WebHome\UserApiBundle\NdewezWebHomeUserApiBundle(),
+            new Ndewez\WebHome\AuthApiBundle\NdewezWebHomeAuthApiBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

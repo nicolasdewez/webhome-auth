@@ -3,14 +3,25 @@
 namespace AppBundle\Service\Transformer;
 
 use AppBundle\Entity\User;
-use Ndewez\WebHome\UserApiBundle\V0\Model\Authorization;
-use Ndewez\WebHome\UserApiBundle\V0\Model\User as UserModel;
+use Ndewez\WebHome\AuthApiBundle\V0\Model\Application;
+use Ndewez\WebHome\AuthApiBundle\V0\Model\User as UserModel;
 
 /**
  * Class UserTransformer.
  */
 class UserTransformer
 {
+    /** @var AuthorizationTransformer */
+    private $authorizationTransformer;
+
+    /**
+     * @param AuthorizationTransformer $authorizationTransformer
+     */
+    public function __construct(AuthorizationTransformer $authorizationTransformer)
+    {
+        $this->authorizationTransformer = $authorizationTransformer;
+    }
+
     /**
      * @param User $user
      *
@@ -20,19 +31,24 @@ class UserTransformer
     {
         $userModel = new UserModel();
         $userModel->setUsername($user->getUsername())
-            ->setRole($user->getRole())
+            ->setGroup($user->getGroup()->getCode())
             ->setFirstName($user->getFirstName())
             ->setLastName($user->getLastName())
             ->setBirthDate($user->getBirthDate())
             ->setEmail($user->getEmail())
             ->setActive($user->isActive());
 
-        foreach ($user->getAuthorizations() as $authorization) {
-            $authorizationModel = new Authorization();
-            $authorizationModel->setCodeAction($authorization->getCode())
+        foreach ($user->getGroup()->getApplications() as $application) {
+            $applicationModel = new Application();
+            $applicationModel
+                ->setCodeApplication($application->getCode())
                 ->setGranted(true);
 
-            $userModel->addAuthorization($authorizationModel);
+            $userModel->addApplication($applicationModel);
+        }
+
+        foreach ($user->getGroup()->getAuthorizations() as $authorization) {
+            $userModel->addAuthorization($this->authorizationTransformer->entityToModel($authorization));
         }
 
         return $userModel;

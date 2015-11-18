@@ -1,4 +1,9 @@
+# BDD
 app/console doctrine:database:drop --force
 app/console doctrine:database:create
 ./bin/phinx migrate
 app/console doctrine:fixtures:load --append
+
+# Clients
+#app/console oauth:client:create --redirect-uri="https://www.getpostman.com/oauth2/callback" --grant-type="authorization_code" --grant-type="token" postman
+app/console oauth:client:create --redirect-uri="http://localhost:8000/app_dev.php" --grant-type="authorization_code" --grant-type="token" webhome-app

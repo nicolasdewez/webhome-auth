@@ -2,12 +2,38 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
+        <title>{% block title %}{{ project_name }} {{ app_name }}{% endblock %}</title>
+
+        {% block stylesheets %}
+            <link rel="stylesheet" href="{{ asset('public/app.css') }}">
+        {% endblock %}
+
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
-    <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+    <body class="root">
+        <header class="header">
+            {{ include('NdewezWebHomeCommonBundle::header.html.twig') }}
+        </header>
+
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                {{ include('NdewezWebHomeCommonBundle::menu.html.twig') }}
+            </div>
+        </nav>
+
+        <div class="body">
+
+            {% block breadcrumb %}{% endblock %}
+
+            <div class="flash">
+                {{ include('NdewezWebHomeCommonBundle::flash.html.twig') }}
+            </div>
+
+            {% block body %}{% endblock %}
+        </div>
     </body>
+
+    {% block javascripts %}
+        <script type="text/javascript" src="{{ asset('public/app.js') }}" ></script>
+    {% endblock %}
 </html>

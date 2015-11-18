@@ -1,9 +1,26 @@
-api_v0:
-    resource: "@AppBundle/Controller/V0"
+logout:
+    path: /logout
+
+login_check:
+    path: /login-check
+
+app_oauth:
+    resource: "@OAuthBundle/Controller"
     type: annotation
-    prefix: /api/{_locale}/V0
+
+fos_oauth_server_token:
+    resource: "@FOSOAuthServerBundle/Resources/config/routing/token.xml"
+
+fos_oauth_server_authorize:
+    resource: "@FOSOAuthServerBundle/Resources/config/routing/authorize.xml"
 
 app:
     resource: "@AppBundle/Controller"
     type: annotation
-    prefix: /{_locale}
+
+api_v0:
+    resource: "@AppBundle/Controller/V0"
+    type: annotation
+    prefix: /api/{_locale}/V0
+    requirements: { "_locale": "fr|en" }
+    defaults: { "_locale": "%locale%" }

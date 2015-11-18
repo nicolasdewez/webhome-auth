@@ -5,6 +5,9 @@ imports:
 
 parameters:
     locale: en
+    project.name: WebHome
+    app.name: Auth
+    app.icon: glyphicon-eye-open
 
 framework:
     #esi:             ~
@@ -33,6 +36,11 @@ framework:
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
+    globals:
+        project_name: "%project.name%"
+        app_name: "%app.name%"
+        app_icon: "%app.icon%"
+    form_themes: ['NdewezWebHomeCommonBundle:themes:back.html.twig']
 
 # Assetic Configuration
 assetic:
@@ -50,7 +58,7 @@ assetic:
 # Doctrine Configuration
 doctrine:
     dbal:
-        driver:   pdo_mysql
+        driver:   pdo_pgsql
         host:     "%database_host%"
         port:     "%database_port%"
         dbname:   "%database_name%"
@@ -70,3 +78,20 @@ swiftmailer:
     username:  "%mailer_user%"
     password:  "%mailer_password%"
     spool:     { type: memory }
+
+# oAuth Configuration
+fos_oauth_server:
+    db_driver: orm
+    client_class:        OAuthBundle\Entity\Client
+    access_token_class:  OAuthBundle\Entity\AccessToken
+    refresh_token_class: OAuthBundle\Entity\RefreshToken
+    auth_code_class:     OAuthBundle\Entity\AuthCode
+    service:
+        options:
+            supported_scopes: read
+
+ndewez_web_home_common:
+    menu:
+        session: false
+        getter: app.menu.getter
+        builder: app.menu.builder

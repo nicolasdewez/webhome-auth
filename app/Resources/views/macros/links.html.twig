@@ -1,0 +1,9 @@
+{% macro users(title, href, rel) %}
+    {% import '@NdewezWebHomeCommon/macros/links.html.twig' as links %}
+    {{ links.link('glyphicon glyphicon-user', title, href, rel) }}
+{% endmacro %}
+
+{% macro authorizations(title, href, rel) %}
+    {% import '@NdewezWebHomeCommon/macros/links.html.twig' as links %}
+    {{ links.link('glyphicon glyphicon-lock', title, href, rel) }}
+{% endmacro %}

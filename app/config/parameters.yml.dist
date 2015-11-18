@@ -1,9 +1,9 @@
 parameters:
     database_host:     127.0.0.1
     database_port:     ~
-    database_name:     webhome-user
-    database_user:     root
-    database_password: ~
+    database_name:     webhome-auth
+    database_user:     ndewez
+    database_password: ndewez
 
     mailer_transport:  smtp
     mailer_host:       127.0.0.1

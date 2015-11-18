@@ -1,2 +1,22 @@
+User account is disabled.: Compte utilisateur désactivé
+
+login:
+    title: Connexion
+    form:
+        username: Nom utilisateur
+        password: Mot de passe
+        remember: Se souvenir de moi
+        submit: Se connecter
+
+home:
+    title:
+        home: Accueil
+        change-password: Changer mon mot de passe
+
 users:
-    list: Liste des utilisateurs
+    title:
+        list: Liste des utilisateurs
+
+groups:
+    title:
+        list: Liste des groupes

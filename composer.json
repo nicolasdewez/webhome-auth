@@ -1,10 +1,10 @@
 {
-    "name": "nicolasdewez/webhome-user",
+    "name": "nicolasdewez/webhome-auth",
     "license": "MIT",
     "type": "project",
-    "description": "WebHome Project - User",
+    "description": "WebHome Project - Auth",
     "autoload": {
-        "psr-4": { "": "src/", "SymfonyStandard\\": "app/SymfonyStandard/" }
+        "psr-4": { "": "src/" }
     },
     "require": {
         "php": ">=5.3.9",
@@ -21,14 +21,14 @@
         "friendsofsymfony/rest-bundle": "^1.7",
         "jms/serializer-bundle": "^1.0",
         "doctrine/doctrine-fixtures-bundle": "^2.2",
-        "nicolasdewez/webhome-user-api": "dev-master",
-        "nicolasdewez/webhome-common": "dev-master"
+        "nicolasdewez/webhome-auth-api": "dev-master",
+        "nicolasdewez/webhome-common": "dev-master",
+        "friendsofsymfony/oauth-server-bundle": "^1.4"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3",
         "behat/behat": "~2.0",
         "behat/symfony2-extension": "^1.1",
-        "nicolasdewez/behat-sf-toolkit": "dev-master",
         "phpunit/phpunit": "^4.8",
         "nelmio/api-doc-bundle": "^2.9"
     },
@@ -61,12 +61,8 @@
     "extra": {
         "symfony-app-dir": "app",
         "symfony-web-dir": "web",
-        "symfony-assets-install": "relative",
         "incenteev-parameters": {
             "file": "app/config/parameters.yml"
-        },
-        "branch-alias": {
-            "dev-master": "2.7-dev"
         }
     }
 }

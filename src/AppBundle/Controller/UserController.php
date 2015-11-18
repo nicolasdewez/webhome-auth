@@ -5,8 +5,6 @@ namespace AppBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 /**
  * Class UserController.
@@ -20,12 +18,10 @@ class UserController extends Controller
      *
      * @return array
      *
-     * @Route("", name="users_list")
-     * @Method("GET")
-     * @Template()
+     * @Route("", name="app_users_list", methods={"GET"})
      */
     public function listAction(Request $request)
     {
-        return [];
+        return $this->render('user/list.html.twig');
     }
 }

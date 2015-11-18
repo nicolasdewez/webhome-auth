@@ -1,4 +1,7 @@
 /web/bundles/
+/web/fonts/
+/web/public/
+/web/img/
 /app/bootstrap.php.cache
 /app/cache/*
 /app/config/parameters.yml
@@ -10,3 +13,5 @@
 /vendor/
 /bin/
 /composer.phar
+/bower_components/
+/node_modules/

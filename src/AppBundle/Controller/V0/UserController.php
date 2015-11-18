@@ -2,9 +2,7 @@
 
 namespace AppBundle\Controller\V0;
 
-use AppBundle\Exception\PasswordException;
 use FOS\RestBundle\Controller\Annotations\Get;
-use FOS\RestBundle\Controller\Annotations\Patch;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -17,7 +15,8 @@ use Symfony\Component\HttpFoundation\Response;
 class UserController extends Controller
 {
     /**
-     * @param string $username
+     * @param string  $username
+     * @param Request $request
      *
      * @return Response
      *
@@ -83,39 +82,35 @@ class UserController extends Controller
     }
 
     /**
-     * @param string  $username
-     * @param Request $request
+     * @param string $username
+     * @param string $codeApplication
      *
      * @return Response
      *
-     * Change password for user
+     * Check if user is granted for application
      *
      * @ApiDoc(
      *  resource = true,
-     *  description = "Change password for user"
+     *  description = "Check if user is granted for application"
      * )
      *
-     * @Patch("/users/{username}", name="api_change_password")
+     * @Get("/users/{username}/application/{codeApplication}", name="api_user_application_granted")
      */
-    public function changePasswordAction($username, Request $request)
+    public function isApplicationGrantedAction($username, $codeApplication)
     {
-        $changePassword = $this->get('serializer')->deserialize($request->getContent(), 'Ndewez\WebHome\UserApiBundle\V0\Model\ChangePassword', 'json');
         $user = $this->get('doctrine')->getRepository('AppBundle:User')->findOneBy(['username' => $username]);
-
-        if (null === $user || $changePassword->getUsername() !== $user->getUsername()) {
+        if (null === $user) {
             return new JsonResponse([
                 'message' => $this->get('translator')->trans('username.not_found', [], 'validators'),
             ], Response::HTTP_NOT_FOUND);
         }
 
-        try {
-            $this->get('app.password')->change($user, $changePassword);
-        } catch (PasswordException $exception) {
-            return new JsonResponse($exception->getErrors(), Response::HTTP_BAD_REQUEST);
-        }
+        $userApplication = $this->get('app.authorization')->buildUserApplication($user, $codeApplication);
 
-        return new JsonResponse([
-            'changed' => true,
-        ]);
+        return new Response(
+            $this->get('serializer')->serialize($userApplication, 'json'),
+            Response::HTTP_OK,
+            ['Content-type' => 'application/json']
+        );
     }
 }

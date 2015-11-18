@@ -1,14 +1,14 @@
-app:
-    image: nicolasdewez/symfony
-    ports:
-        - 8000:80
-    links:
-        - db:mysql
+#app:
+#    image: nicolasdewez/symfony
+#    ports:
+#        - 8001:80
+#    links:
+#        - db:mysql
 #        - mailcatcher:smtp
-    volumes:
-        - .:/srv
-        - /srv/app/cache
-        - /srv/app/logs
+#    volumes:
+#        - .:/srv
+#        - /srv/app/cache
+#        - /srv/app/logs
 
 db:
     image: mysql

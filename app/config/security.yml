@@ -1,28 +1,46 @@
-# To get started with security, check out the documentation:
-# http://symfony.com/doc/current/book/security.html
 security:
-
-    # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
     providers:
-        in_memory:
-            memory: ~
+        user_provider:
+            entity:
+                class:    AppBundle\Entity\User
+                property: username
 
     encoders:
         AppBundle\Entity\User:
             algorithm: sha512
+            iterations: 5
 
     firewalls:
-        # disables authentication for assets and the profiler, adapt it according to your needs
         dev:
-            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            pattern: ^/(_(profiler|wdt)|css|images|js|fonts)/
             security: false
 
-        main:
-            anonymous: ~
-            # activate different ways to authenticate
+#        api:
+#            pattern:    ^/api
+#            fos_oauth:  true
+#            stateless:  true
+#            anonymous:  false
 
-            # http_basic: ~
-            # http://symfony.com/doc/current/book/security.html#a-configuring-how-your-users-will-authenticate
+        oauth_authorize:
+            pattern:   ^/
+            anonymous: true
+            provider:  user_provider
+            form_login:
+                login_path: login
+                check_path: login_check
+#                use_referer: false
+                default_target_path: app_home
+            logout:
+                path:   logout
+                target: login
+            remember_me:
+                key:      "%secret%"
+                lifetime: 31536000 # 365 jours en secondes
+                path:     home
 
-            # form_login: ~
-            # http://symfony.com/doc/current/cookbook/security/form_login_setup.html
+    access_control:
+        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/oauth/v2/auth, roles: IS_AUTHENTICATED_REMEMBERED }
+        - { path: ^/oauth/v2/token, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api, roles: [ IS_AUTHENTICATED_ANONYMOUSLY ] }
+        - { path: ^/, roles: IS_AUTHENTICATED_REMEMBERED }

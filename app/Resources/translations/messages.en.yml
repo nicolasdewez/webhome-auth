@@ -1,2 +1,54 @@
+User account is disabled.: User account is disabled
+
+table:
+    no-element: There are no element
+
+actions:
+    label: Actions
+    edit: Edit
+    show: Show
+    active: Active
+    deactive: Deactive
+    submit: Submit
+    delete: Delete
+
+login:
+    title: Connection
+    form:
+        username: Username
+        password: Password
+        remember: Remember me
+        submit: Sign in
+
+home:
+    title:
+        home: Home
+        change-password: Change my password
+        show-my-account: My account
+
 users:
-    list: List of users
+    title:
+        list: List of users
+
+groups:
+    title:
+        list: List of groups
+        edit: Edit a group
+        show: Show a group
+        add: Add a group
+
+    label:
+        code: Code
+        title: Title
+        active: Active
+        users: Users
+        applications: Applications
+        authorizations: Authorizations
+
+    message:
+        edit: Group edited
+        add: Group added
+        delete: Group deleted
+
+    error:
+        contains_user: Group can't be deleted because it contains user(s)

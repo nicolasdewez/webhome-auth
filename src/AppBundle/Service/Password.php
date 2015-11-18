@@ -7,7 +7,7 @@ use AppBundle\Exception\PasswordException;
 use AppBundle\Model\Password as PasswordModel;
 use Doctrine\Bundle\DoctrineBundle\Registry as Doctrine;
 use Ndewez\WebHome\CommonBundle\Service\Validator;
-use Ndewez\WebHome\UserApiBundle\V0\Model\ChangePassword;
+use Ndewez\WebHome\AuthApiBundle\V0\Model\ChangePassword;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 /**

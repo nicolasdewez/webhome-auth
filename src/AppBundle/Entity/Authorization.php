@@ -8,15 +8,17 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Authorization.
  *
- * @ORM\Table(name="authorization")
+ * @ORM\Table(name="authorizations")
  * @ORM\Entity(repositoryClass="AuthorizationRepository")
  */
 class Authorization
 {
+    const PREFIX = 'ROLE_';
+
     /**
      * @var int
      *
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
@@ -25,35 +27,34 @@ class Authorization
     /**
      * @var string
      *
-     * @ORM\Column(name="code", type="string", length=255)
+     * @ORM\Column()
      */
     private $code;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="category", type="string", length=255)
-     */
-    private $category;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="title", type="string", length=255)
+     * @ORM\Column()
      */
     private $title;
 
     /**
+     * @var Application
+     *
+     * @ORM\ManyToOne(targetEntity="Application", inversedBy="authorizations", cascade={"persist"})
+     */
+    private $application;
+
+    /**
      * @var ArrayCollection
      *
-     * @ORM\ManyToMany(targetEntity="User", mappedBy="authorizations")
-     **/
-    private $users;
+     * @ORM\ManyToMany(targetEntity="Group", mappedBy="authorizations")
+     */
+    private $groups;
 
     public function __construct()
     {
-        $this->$users = new ArrayCollection();
-        $this->active = true;
+        $this->groups = new ArrayCollection();
     }
 
     /**
@@ -91,30 +92,6 @@ class Authorization
     }
 
     /**
-     * Set category.
-     *
-     * @param string $category
-     *
-     * @return Authorization
-     */
-    public function setCategory($category)
-    {
-        $this->category = $category;
-
-        return $this;
-    }
-
-    /**
-     * Get category.
-     *
-     * @return string
-     */
-    public function getCategory()
-    {
-        return $this->category;
-    }
-
-    /**
      * Set title.
      *
      * @param string $title
@@ -139,10 +116,34 @@ class Authorization
     }
 
     /**
+     * Get application.
+     *
+     * @return Application
+     */
+    public function getApplication()
+    {
+        return $this->application;
+    }
+
+    /**
+     * Set application.
+     *
+     * @param Application $application
+     *
+     * @return Authorization
+     */
+    public function setApplication(Application $application)
+    {
+        $this->application = $application;
+
+        return $this;
+    }
+
+    /**
      * @return ArrayCollection
      */
-    public function getUsers()
+    public function getGroups()
     {
-        return $this->users;
+        return $this->groups;
     }
 }

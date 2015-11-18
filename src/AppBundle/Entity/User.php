@@ -2,20 +2,17 @@
 
 namespace AppBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 
 /**
  * User.
  *
- * @ORM\Table(name="user")
+ * @ORM\Table(name="users")
  * @ORM\Entity
  */
-class User
+class User implements AdvancedUserInterface, \Serializable
 {
-    const ROLE_USER = 'ROLE_USER';
-    const ROLE_ADMIN = 'ROLE_ADMIN';
-
     /**
      * @var int
      *
@@ -28,76 +25,75 @@ class User
     /**
      * @var string
      *
-     * @ORM\Column(name="username", type="string", length=30)
+     * @ORM\Column(length=30)
      */
     private $username;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="password", type="string", length=255)
+     * @ORM\Column()
      */
     private $password;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="salt", type="string", length=255)
+     * @ORM\Column()
      */
     private $salt;
 
     /**
-     * @var string
+     * @var Group
      *
-     * @ORM\Column(name="role", type="string", length=100)
+     * @ORM\ManyToOne(targetEntity="Group", inversedBy="users")
      */
-    private $role;
+    private $group;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="firstName", type="string", length=255)
+     * @ORM\Column()
      */
     private $firstName;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="lastName", type="string", length=255)
+     * @ORM\Column()
      */
     private $lastName;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="birthDate", type="date", nullable=true)
+     * @ORM\Column(type="date", nullable=true)
      */
     private $birthDate;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="email", type="string", length=255, nullable=true)
+     * @ORM\Column(nullable=true)
      */
     private $email;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(length=3)
+     */
+    private $locale;
+
+    /**
      * @var bool
      *
-     * @ORM\Column(name="active", type="boolean")
+     * @ORM\Column(type="boolean")
      */
     private $active;
 
-    /**
-     * @var ArrayCollection
-     *
-     * @ORM\ManyToMany(targetEntity="Authorization", inversedBy="users", cascade={"persist"})
-     */
-    private $authorizations;
-
     public function __construct()
     {
-        $this->authorizations = new ArrayCollection();
         $this->salt = md5(uniqid());
         $this->active = true;
     }
@@ -199,13 +195,13 @@ class User
     /**
      * Set role.
      *
-     * @param string $role
+     * @param Group $group
      *
      * @return User
      */
-    public function setRole($role)
+    public function setGroup(Group $group)
     {
-        $this->role = $role;
+        $this->group = $group;
 
         return $this;
     }
@@ -213,11 +209,11 @@ class User
     /**
      * Get role.
      *
-     * @return string
+     * @return Group
      */
-    public function getRole()
+    public function getGroup()
     {
-        return $this->role;
+        return $this->group;
     }
 
     /**
@@ -317,6 +313,30 @@ class User
     }
 
     /**
+     * Set locale.
+     *
+     * @param string $locale
+     *
+     * @return User
+     */
+    public function setLocale($locale)
+    {
+        $this->locale = $locale;
+
+        return $this;
+    }
+
+    /**
+     * Get locale.
+     *
+     * @return string
+     */
+    public function getLocale()
+    {
+        return $this->locale;
+    }
+
+    /**
      * Set active.
      *
      * @param bool $active
@@ -341,10 +361,69 @@ class User
     }
 
     /**
-     * @return ArrayCollection
+     * {@inheritDoc}
      */
-    public function getAuthorizations()
+    public function serialize()
     {
-        return $this->authorizations;
+        return serialize(
+            [
+                $this->id,
+            ]
+        );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function unserialize($serialized)
+    {
+        list($this->id) = unserialize($serialized);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getRoles()
+    {
+        return $this->group->getAuthorizationsCodes();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function eraseCredentials()
+    {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isAccountNonExpired()
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isAccountNonLocked()
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isCredentialsNonExpired()
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isEnabled()
+    {
+        return $this->active && $this->group->isActive();
     }
 }

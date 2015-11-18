@@ -2,6 +2,7 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
+use AppBundle\Entity\Group;
 use AppBundle\Entity\User;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\FixtureInterface;
@@ -34,17 +35,21 @@ class LoadUserData extends AbstractFixture implements FixtureInterface, OrderedF
     public function load(ObjectManager $manager)
     {
         $fixtures = [
-            ['username' => 'ndewez', 'firstName' => 'Nicolas', 'lastName' => 'Dewez', 'role' => 'ROLE_ADMIN'],
-            ['username' => 'user', 'firstName' => 'Nicolas', 'lastName' => 'Dewez', 'role' => 'ROLE_USER'],
-            ['username' => 'user2', 'firstName' => 'Nicolas', 'lastName' => 'Dewez', 'role' => 'ROLE_USER', 'active' => false],
+            ['username' => 'ndewez', 'firstName' => 'Nicolas', 'lastName' => 'Dewez', 'locale' => 'en', 'codeGroup' => 'GROUP_ADMIN'],
+            ['username' => 'user', 'firstName' => 'Nicolas', 'lastName' => 'Dewez', 'locale' => 'fr', 'codeGroup' => 'GROUP_USER'],
+            ['username' => 'user2', 'firstName' => 'Nicolas', 'lastName' => 'Dewez', 'locale' => 'fr', 'codeGroup' => 'GROUP_USER', 'active' => false],
         ];
 
         foreach ($fixtures as $fixture) {
+            /** @var Group $group */
+            $group = $this->getReference('group_'.$fixture['codeGroup']);
+
             $user = new User();
             $user->setUsername($fixture['username']);
             $user->setFirstName($fixture['firstName']);
             $user->setLastName($fixture['lastName']);
-            $user->setRole($fixture['role']);
+            $user->setLocale($fixture['locale']);
+            $user->setGroup($group);
 
             if (isset($fixture['active'])) {
                 $user->setActive($fixture['active']);
@@ -56,7 +61,7 @@ class LoadUserData extends AbstractFixture implements FixtureInterface, OrderedF
             $manager->persist($user);
             $manager->flush();
 
-            $this->addReference($fixture['username'], $user);
+            $this->addReference('user_'.$fixture['username'], $user);
         }
     }
 
@@ -65,6 +70,6 @@ class LoadUserData extends AbstractFixture implements FixtureInterface, OrderedF
      */
     public function getOrder()
     {
-        return 1;
+        return 2;
     }
 }

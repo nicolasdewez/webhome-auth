@@ -3,12 +3,12 @@ paths:
 
 environments:
     default_migration_table: phinxlog
-    default_database: mysql
-    mysql:
-        adapter: mysql
+    default_database: pgsql
+    pgsql:
+        adapter: pgsql
         host: 127.0.0.1
-        name: webhome-user
-        user: root
-        pass: my-secret-pw
-        port: 3306
+        name: webhome-auth
+        user: ndewez
+        pass: ndewez
+        port: 5432
         charset: utf8
