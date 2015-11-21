@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="{{ app.request.locale|split('_')[0] }}">
     <head>
         <meta charset="UTF-8" />
         <title>{% block title %}{{ project_name }} {{ app_name }}{% endblock %}</title>
@@ -25,7 +25,7 @@
 
             {% block breadcrumb %}{% endblock %}
 
-            <div class="flash">
+            <div class="flash" data-prototype="{{ include('@NdewezWebHomeCommon/flashPrototype.html.twig') }}">
                 {{ include('NdewezWebHomeCommonBundle::flash.html.twig') }}
             </div>
 
@@ -34,6 +34,10 @@
     </body>
 
     {% block javascripts %}
+        <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+        <script src="{{ url('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
+        <script src="{{ asset('bundles/bazingajstranslation/js/translator.min.js') }}"></script>
+        <script src="{{ url('bazinga_jstranslation_js') }}"></script>
         <script type="text/javascript" src="{{ asset('public/app.js') }}" ></script>
     {% endblock %}
 </html>

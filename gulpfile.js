@@ -10,7 +10,7 @@ var gulp = require('gulp'),
     jsPath = srcPath + 'scripts/',
     bootstrapJsFile = bootstrapPath + 'js/bootstrap.js',
     jqueryJsFile = jqueryPath + 'jquery.js',
-    jsFile = jsPath + 'app.js',
+    jsFile = jsPath + '*',
     imgPath = srcPath + 'images/*',
     fontPath = bootstrapPath + 'fonts/*',
     distPath = 'web/',
@@ -44,17 +44,14 @@ gulp.task('cssDist', function() {
 });
 
 gulp.task('js', function() {
-    tasks.env({ vars: { NODE_ENV: 'development' } });
-    gulp.src([jqueryJsFile, bootstrapJsFile])
+    gulp.src([jqueryJsFile, bootstrapJsFile, jsFile])
         .pipe(concat('app.js'))
         .pipe(tasks.plumber('app.js'))
         .pipe(gulp.dest(distJsCssPath));
 });
 
 gulp.task('jsDist', function() {
-    tasks.env({ vars: { NODE_ENV: 'production' } });
-
-    gulp.src([jsFile, jqueryJsFile, bootstrapJsFile])
+    gulp.src([jqueryJsFile, bootstrapJsFile, jsFile])
         .pipe(concat('app.js'))
         .pipe(tasks.plumber())
         .pipe(tasks.uglify())

@@ -7,39 +7,43 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
- * Class UserController.
+ * Class GroupsController.
  *
  * @Route("/groups")
+ * @Security("has_role('ROLE_AUTH_GRPS')")
  */
-class GroupController extends AbstractController
+class GroupsController extends AbstractController
 {
     /**
-     * @return array
+     * @return Response
      *
-     * @Route("", name="app_groups_list", methods={"GET"})
+     * @Route("", name="app_groups_list", methods="GET")
+     * @Security("has_role('ROLE_AUTH_GRPS_SHOW')")
      */
     public function listAction()
     {
-        $groups = $this->get('doctrine.orm.entity_manager')->getRepository('AppBundle:Group')->findAll();
+        $groups = $this->get('doctrine.orm.entity_manager')->getRepository('AppBundle:Group')->findBy([], ['code' => 'ASC']);
 
-        return $this->render('group/list.html.twig', ['groups' => $groups]);
+        return $this->render('groups/list.html.twig', ['groups' => $groups]);
     }
 
     /**
      * @param Group   $group
      * @param Request $request
      *
-     * @return array|Response
+     * @return Response
      *
-     * @Route("/{id}", name="app_groups_edit", requirements={"id": "^\d$"}, methods={"GET", "POST"})
+     * @Route("/{id}", name="app_groups_edit", requirements={"id": "^\d+$"}, methods={"GET", "POST"})
+     * @Security("has_role('ROLE_AUTH_GRPS_EDIT')")
      */
     public function editAction(Group $group, Request $request)
     {
-        $form = $this->get('form.factory')->create('group', $group, ['delete' => !$group->hasUser()]);
+        $form = $this->get('form.factory')->create('app_group', $group, ['delete' => !$group->hasUser()]);
 
         if ($form->handleRequest($request) && $form->isValid()) {
             $manager = $this->get('doctrine.orm.entity_manager');
@@ -49,7 +53,7 @@ class GroupController extends AbstractController
                 if ($group->hasUser()) {
                     $this->get('session')->getFlashBag()->add('error', $this->get('translator')->trans('groups.error.contains_user'));
 
-                    return new RedirectResponse($this->generateUrl('groups_list'));
+                    return new RedirectResponse($this->generateUrl('app_groups_list'));
                 }
 
                 // Delete element and redirect
@@ -57,14 +61,14 @@ class GroupController extends AbstractController
                 $manager->flush();
                 $this->get('session')->getFlashBag()->add('notice', $this->get('translator')->trans('groups.message.delete'));
 
-                return new RedirectResponse($this->generateUrl('groups_list'));
+                return new RedirectResponse($this->generateUrl('app_groups_list'));
             }
 
             $manager->flush();
             $this->get('session')->getFlashBag()->add('notice', $this->get('translator')->trans('groups.message.edit'));
         }
 
-        return $this->render('group/edit.html.twig', ['form' => $form->createView()]);
+        return $this->render('groups/edit.html.twig', ['form' => $form->createView()]);
     }
 
     /**
@@ -72,11 +76,12 @@ class GroupController extends AbstractController
      *
      * @return Response
      *
-     * @Route("/show/{id}", name="app_groups_show", methods="GET")
+     * @Route("/show/{id}", name="app_groups_show", requirements={"id": "^\d+$"}, methods="GET")
+     * @Security("has_role('ROLE_AUTH_GRPS_SHOW')")
      */
     public function showAction(Group $group)
     {
-        return $this->render('group/show.html.twig', ['group' => $group]);
+        return $this->render('groups/show.html.twig', ['group' => $group]);
     }
 
     /**
@@ -85,11 +90,12 @@ class GroupController extends AbstractController
      * @return Response
      *
      * @Route("/add", name="app_groups_add", methods={"GET", "POST"})
+     * @Security("has_role('ROLE_AUTH_GRPS_ADD')")
      */
     public function addAction(Request $request)
     {
         $group = new Group();
-        $form = $this->get('form.factory')->create('group', $group);
+        $form = $this->get('form.factory')->create('app_group', $group);
 
         if ($form->handleRequest($request) && $form->isValid()) {
             $manager = $this->get('doctrine.orm.entity_manager');
@@ -98,10 +104,10 @@ class GroupController extends AbstractController
 
             $this->get('session')->getFlashBag()->add('notice', $this->get('translator')->trans('groups.message.add'));
 
-            return new RedirectResponse($this->generateUrl('groups_edit', ['id' => $group->getId()]));
+            return new RedirectResponse($this->generateUrl('app_groups_edit', ['id' => $group->getId()]));
         }
 
-        return $this->render('group/add.html.twig', ['form' => $form->createView()]);
+        return $this->render('groups/add.html.twig', ['form' => $form->createView()]);
     }
 
     /**
@@ -110,7 +116,8 @@ class GroupController extends AbstractController
      *
      * @return JsonResponse
      *
-     * @Route("/{id}/activate", name="app_groups_activate", methods={"PATCH"})
+     * @Route("/{id}/activate", requirements={"id": "^\d+$"}, name="app_groups_activate", methods="PATCH")
+     * @Security("has_role('ROLE_AUTH_GRPS_ACTIV')")
      */
     public function activateAction(Group $group, Request $request)
     {
@@ -119,7 +126,7 @@ class GroupController extends AbstractController
         $group->setActive(true);
         $this->get('doctrine.orm.entity_manager')->flush();
 
-        return new JsonResponse(['state' => true]);
+        return new JsonResponse(['message' => $this->get('translator')->trans('groups.message.active')]);
     }
 
     /**
@@ -128,7 +135,8 @@ class GroupController extends AbstractController
      *
      * @return JsonResponse
      *
-     * @Route("/{id}/deactivate", name="app_groups_deactivate", methods={"PATCH"})
+     * @Route("/{id}/deactivate", requirements={"id": "^\d+$"}, name="app_groups_deactivate", methods="PATCH")
+     * @Security("has_role('ROLE_AUTH_GRPS_ACTIV')")
      */
     public function deactivateAction(Group $group, Request $request)
     {
@@ -137,7 +145,7 @@ class GroupController extends AbstractController
         $group->setActive(false);
         $this->get('doctrine.orm.entity_manager')->flush();
 
-        return new JsonResponse(['state' => true]);
+        return new JsonResponse(['message' => $this->get('translator')->trans('groups.message.inactive')]);
     }
 
     /**
@@ -146,7 +154,8 @@ class GroupController extends AbstractController
      *
      * @return JsonResponse
      *
-     * @Route("/{id}/delete", name="app_groups_delete", methods={"DELETE"})
+     * @Route("/{id}/delete", requirements={"id": "^\d+$"}, name="app_groups_delete", methods="DELETE")
+     * @Security("has_role('ROLE_AUTH_GRPS_DEL')")
      */
     public function deleteAction(Group $group, Request $request)
     {
@@ -156,8 +165,10 @@ class GroupController extends AbstractController
             throw new BadRequestHttpException($this->get('translator')->trans('groups.error.contains_user'));
         }
 
-        $this->get('doctrine.orm.entity_manager')->remove($group);
+        $manager = $this->get('doctrine.orm.entity_manager');
+        $manager->remove($group);
+        $manager->flush();
 
-        return new JsonResponse(['state' => true]);
+        return new JsonResponse(['message' => $this->get('translator')->trans('groups.message.delete')]);
     }
 }

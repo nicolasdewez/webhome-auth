@@ -23,7 +23,9 @@
         "doctrine/doctrine-fixtures-bundle": "^2.2",
         "nicolasdewez/webhome-auth-api": "dev-master",
         "nicolasdewez/webhome-common": "dev-master",
-        "friendsofsymfony/oauth-server-bundle": "^1.4"
+        "friendsofsymfony/oauth-server-bundle": "^1.4",
+        "friendsofsymfony/jsrouting-bundle": "^1.5",
+        "willdurand/js-translation-bundle": "^2.5"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3",

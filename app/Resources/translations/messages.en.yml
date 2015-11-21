@@ -7,8 +7,8 @@ actions:
     label: Actions
     edit: Edit
     show: Show
-    active: Active
-    deactive: Deactive
+    activate: Activate
+    deactivate: Deactivate
     submit: Submit
     delete: Delete
 
@@ -46,6 +46,8 @@ groups:
         authorizations: Authorizations
 
     message:
+        active: Group is now active
+        inactive: Group is now inactive
         edit: Group edited
         add: Group added
         delete: Group deleted

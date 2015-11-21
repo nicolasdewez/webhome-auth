@@ -28,7 +28,7 @@
                 <th>{{ 'groups.label.users'|trans }}</th>
                 <th>{{ 'groups.label.applications'|trans }}</th>
                 <th>{{ 'groups.label.authorizations'|trans }}</th>
-                <th>{{ 'actions.label'|trans }} {{ links.plus('groups.title.add'|trans, path('app_groups_add')) }}</th>
+                <th>{{ 'actions.label'|trans }} {% if is_granted('ROLE_AUTH_GRPS_ADD') %}{{ links.plus('groups.title.add'|trans, path('app_groups_add')) }}{% endif %}</th>
             </tr>
         </thead>
         <tbody>
@@ -37,42 +37,35 @@
                 <td>{{ group.code }}</td>
                 <td>{{ group.title }}</td>
                 <td class="appGroupsList-active">
-                    {% if group.active %}
-                        {{ icons.active("") }}
-                    {% else %}
-                        {{ icons.deactive("") }}
-                    {% endif %}
+                    {{ icons.active("", group.active) }}
+                    {{ icons.deactive("", not group.active) }}
                 </td>
                 <td class="appGroupsList-users">
                     {{ group.users|length }}
-                    {#{% if is_granted('ROLE_AUTH_USERS') %}#}
+                    {% if is_granted('ROLE_AUTH_USERS') %}
                         {{ auth_links.users('Utilisateurs', '#') }}
-                    {#{% endif %}#}
+                    {% endif %}
                 </td>
                 <td class="appGroupsList-applications">{{ group.applications|length }}</td>
                 <td class="appGroupsList-authorizations">
                     {{ group.authorizations|length }}
-                    {#{% if is_granted('ROLE_AUTH_GRPS_AUTHZ') %}#}
+                    {% if is_granted('ROLE_AUTH_GRPS_AUTHZ') %}
                         {{ auth_links.authorizations('Autorisations', '#') }}
-                    {#{% endif %}#}
+                    {% endif %}
                 </td>
                 <td class="appGroupsList-actions">
-                    {#{% if is_granted('ROLE_AUTH_GRPS_EDIT') %}#}
+                    {% if is_granted('ROLE_AUTH_GRPS_EDIT') %}
                         {{ links.edit('actions.edit'|trans, path('app_groups_edit', {'id': group.id})) }}
-                    {#{% else %}#}
-                        {#{{ links.show('actions.show'|trans, path('app_groups_show', {'id': group.id})) }}#}
-                    {#{% endif %}#}
+                    {% else %}
+                        {{ links.show('actions.show'|trans, path('app_groups_show', {'id': group.id})) }}
+                    {% endif %}
 
-                    {#{% if is_granted('ROLE_AUTH_GRPS_ACTIV') %}#}
-                        {% if group.active %}
-                            {{ links.deactive('actions.deactive'|trans, null, path('app_groups_deactivate', {'id': group.id})) }}
-                        {% else  %}
-                            {{ links.active('actions.active'|trans, null, path('app_groups_activate', {'id': group.id})) }}
-                        {% endif %}
-                    {#{% endif %}#}
+                    {% if is_granted('ROLE_AUTH_GRPS_ACTIV') %}
+                        {{ links.deactive('actions.deactivate'|trans, null, path('app_groups_deactivate', {'id': group.id}), group.active) }}
+                        {{ links.active('actions.activate'|trans, null, path('app_groups_activate', {'id': group.id}), not group.active) }}
+                    {% endif %}
 
-                    {#{% if not group.hasUser and is_granted('ROLE_AUTH_GRPS_DEL') %}#}
-                    {% if not group.hasUser %}
+                    {% if not group.hasUser and is_granted('ROLE_AUTH_GRPS_DEL') %}
                         {{ links.delete('actions.delete'|trans, null, path('app_groups_delete', {'id': group.id})) }}
                     {% endif %}
                 </td>
@@ -84,5 +77,11 @@
         {% endfor %}
         </tbody>
     </table>
+{% endblock %}
 
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        new GroupsList($('.appGroupsList'));
+    </script>
 {% endblock %}

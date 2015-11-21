@@ -159,10 +159,10 @@ class Group
      */
     public function getAuthorizationsCodes()
     {
-        $codes = [];
-        foreach ($this->authorizations as $authorization) {
-            $codes[] = Authorization::PREFIX.$authorization->getCode();
-        }
+        $codes = $this->authorizations->getValues();
+        array_walk($codes, function(&$item) {
+            $item = Authorization::PREFIX.$item->getCode();
+        });
 
         return $codes;
     }

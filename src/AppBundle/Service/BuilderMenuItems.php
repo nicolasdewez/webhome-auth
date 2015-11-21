@@ -27,7 +27,7 @@ class BuilderMenuItems implements BuilderMenuItemsInterface
 
         $items[] = $item;
 
-        if ($this->isGranted('AUTH_GROUPS', $authorizations)) {
+        if ($this->isGranted('AUTH_GRPS', $authorizations)) {
             $item = new MenuItem();
             $item
                 ->setTitle('menu.auth.groups')
