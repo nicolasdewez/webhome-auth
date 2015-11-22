@@ -81,7 +81,9 @@ class GroupsController extends AbstractController
      */
     public function showAction(Group $group)
     {
-        return $this->render('groups/show.html.twig', ['group' => $group]);
+        $form = $this->get('form.factory')->create('app_group', $group, ['submit' => false]);
+
+        return $this->render('groups/show.html.twig', ['form' => $form->createView()]);
     }
 
     /**

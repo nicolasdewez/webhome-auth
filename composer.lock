@@ -2014,12 +2014,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/nicolasdewez/webhome-common.git",
-                "reference": "d1c90228790289aefacd3864279fa06c089838c7"
+                "reference": "9242af05fc6952aa1247bb69e872d484d14ebd06"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nicolasdewez/webhome-common/zipball/d1c90228790289aefacd3864279fa06c089838c7",
-                "reference": "d1c90228790289aefacd3864279fa06c089838c7",
+                "url": "https://api.github.com/repos/nicolasdewez/webhome-common/zipball/9242af05fc6952aa1247bb69e872d484d14ebd06",
+                "reference": "9242af05fc6952aa1247bb69e872d484d14ebd06",
                 "shasum": ""
             },
             "require": {
@@ -2040,7 +2040,7 @@
                 "MIT"
             ],
             "description": "WebHome Project - Common",
-            "time": "2015-11-21 21:30:57"
+            "time": "2015-11-22 08:36:28"
         },
         {
             "name": "phpcollection/phpcollection",

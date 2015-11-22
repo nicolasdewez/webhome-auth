@@ -1,9 +1,21 @@
 User account is disabled.: Compte utilisateur désactivé
 
+table:
+    no-element: Aucun élément
+
+actions:
+    label: Actions
+    edit: Modifier
+    show: Voir
+    activate: Activer
+    deactivate: Désactiver
+    submit: Valider
+    delete: Supprimer
+
 login:
     title: Connexion
     form:
-        username: Nom utilisateur
+        username: Nom d'utilisateur
         password: Mot de passe
         remember: Se souvenir de moi
         submit: Se connecter
@@ -12,6 +24,7 @@ home:
     title:
         home: Accueil
         change-password: Changer mon mot de passe
+        show-my-account: Mon compte
 
 users:
     title:
@@ -20,3 +33,24 @@ users:
 groups:
     title:
         list: Liste des groupes
+        edit: Modifier un groupe
+        show: Voir un groupe
+        add: Ajouter un groupe
+
+    label:
+        code: Code
+        title: Libellé
+        active: Actif
+        users: Utilisateurs
+        applications: Applications
+        authorizations: Authorisations
+
+    message:
+        active: Le groupe est maintenant actif
+        inactive: Le groupe est maintenant inactif
+        edit: Groupe modifié
+        add: Groupe ajouté
+        delete: Groupe supprimé
+
+    error:
+        contains_user: Le groupe ne peut pas être supprimé parce qu'il contient des utilisateurs

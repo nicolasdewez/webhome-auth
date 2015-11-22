@@ -160,7 +160,7 @@ class Group
     public function getAuthorizationsCodes()
     {
         $codes = $this->authorizations->getValues();
-        array_walk($codes, function(&$item) {
+        array_walk($codes, function (&$item) {
             $item = Authorization::PREFIX.$item->getCode();
         });
 
