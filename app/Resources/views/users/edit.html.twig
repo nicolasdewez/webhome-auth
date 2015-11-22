@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% import "@NdewezWebHomeCommon/macros/forms.html.twig" as forms %}
+
+{% block title %}{{ parent() }} - {{ 'users.title.edit'|trans }}{% endblock %}
+
+{% block breadcrumb %}
+    {{ include('NdewezWebHomeCommonBundle::breadcrumb.thml.twig', {
+            'links': [
+                {'title': 'home.title.home', 'route': 'app_home'},
+                {'title': 'users.title.list', 'route': 'app_users_list'},
+                {'title': 'users.title.edit', 'active': true},
+            ]
+        })
+    }}
+{% endblock %}
+
+{% block body %}
+
+    <h2>{{ 'users.title.edit'|trans }}</h2>
+
+    {{ form_start(form) }}
+        {{ form_row(form.firstName)}}
+        {{ form_row(form.lastName)}}
+        {{ form_row(form.birthDate)}}
+        {{ form_row(form.email)}}
+        {{ form_row(form.locale)}}
+        {{ form_row(form.username)}}
+        {{ form_row(form.group)}}
+        {{ form_row(form.password)}}
+        {{ form_row(form.active)}}
+
+        {{ forms.buttons(form, ['submit', 'delete']) }}
+    {{ form_end(form) }}
+
+{% endblock %}

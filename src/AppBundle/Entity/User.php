@@ -3,13 +3,19 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * User.
  *
- * @ORM\Table(name="users")
+ * @ORM\Table(name="users", uniqueConstraints={
+ *      @ORM\UniqueConstraint(name="users_username_unique", columns = {"username"})
+ * }))
  * @ORM\Entity
+ * @UniqueEntity("username", groups={"Add", "Default"})
  */
 class User implements AdvancedUserInterface, \Serializable
 {
@@ -26,20 +32,27 @@ class User implements AdvancedUserInterface, \Serializable
      * @var string
      *
      * @ORM\Column(length=30)
+     *
+     * @Assert\NotBlank
+     * @Assert\Length(min=3, max=30)
+     * @Assert\Regex("/^[A-Z_0-9]+$/i")
      */
     private $username;
 
     /**
      * @var string
      *
-     * @ORM\Column()
+     * @ORM\Column
+     *
+     * @Assert\NotBlank(groups="Add")
+     * @Assert\Length(min=6, max=255, groups="Add")
      */
     private $password;
 
     /**
      * @var string
      *
-     * @ORM\Column()
+     * @ORM\Column
      */
     private $salt;
 
@@ -47,20 +60,28 @@ class User implements AdvancedUserInterface, \Serializable
      * @var Group
      *
      * @ORM\ManyToOne(targetEntity="Group", inversedBy="users")
+     *
+     * @Assert\NotBlank
      */
     private $group;
 
     /**
      * @var string
      *
-     * @ORM\Column()
+     * @ORM\Column
+     *
+     * @Assert\NotBlank
+     * @Assert\Length(max=255)
      */
     private $firstName;
 
     /**
      * @var string
      *
-     * @ORM\Column()
+     * @ORM\Column
+     *
+     * @Assert\NotBlank
+     * @Assert\Length(max=255)
      */
     private $lastName;
 
@@ -68,6 +89,8 @@ class User implements AdvancedUserInterface, \Serializable
      * @var \DateTime
      *
      * @ORM\Column(type="date", nullable=true)
+     *
+     * @Assert\Date
      */
     private $birthDate;
 
@@ -75,6 +98,8 @@ class User implements AdvancedUserInterface, \Serializable
      * @var string
      *
      * @ORM\Column(nullable=true)
+     *
+     * @Assert\Email
      */
     private $email;
 
@@ -82,6 +107,8 @@ class User implements AdvancedUserInterface, \Serializable
      * @var string
      *
      * @ORM\Column(length=3)
+     *
+     * @Assert\Choice(choices={"fr", "en"})
      */
     private $locale;
 
@@ -425,5 +452,25 @@ class User implements AdvancedUserInterface, \Serializable
     public function isEnabled()
     {
         return $this->active && $this->group->isActive();
+    }
+
+    public function isSuperAdministrator()
+    {
+        return $this->group->isSuperAdministrator();
+    }
+
+    /**
+     * @param ExecutionContextInterface $context
+     *
+     * @Assert\Callback
+     */
+    public function checkPassword(ExecutionContextInterface $context)
+    {
+        if (false !== stripos($this->password, $this->username)) {
+            $context
+                ->buildViolation('Le mot de passe nde doit pas contenir le username')
+                ->atPath('password')
+                ->addViolation();
+        }
     }
 }

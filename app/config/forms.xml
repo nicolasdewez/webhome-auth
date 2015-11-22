@@ -11,5 +11,9 @@
         <service id="app.form.type.group" class="AppBundle\Form\Type\GroupType">
             <tag name="form.type" alias="app_group" />
         </service>
+
+        <service id="app.form.type.user" class="AppBundle\Form\Type\UserType">
+            <tag name="form.type" alias="app_user" />
+        </service>
     </services>
 </container>

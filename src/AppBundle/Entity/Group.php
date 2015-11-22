@@ -4,15 +4,22 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Role.
  *
- * @ORM\Table(name="groups")
+ * @ORM\Table(name="groups", uniqueConstraints={
+ *      @ORM\UniqueConstraint(name="groups_code_unique", columns = {"code"})
+ * }))
  * @ORM\Entity
+ * @UniqueEntity("code")
  */
 class Group
 {
+    const SUPER_ADM = 'ADM_SUPER';
+
     /**
      * @var int
      *
@@ -26,6 +33,10 @@ class Group
      * @var string
      *
      * @ORM\Column(length=20)
+     *
+     * @Assert\NotBlank()
+     * @Assert\Length(min=3, max=20)
+     * @Assert\Regex(pattern="/^[A-Z_-]+$/i")
      */
     private $code;
 
@@ -33,6 +44,9 @@ class Group
      * @var string
      *
      * @ORM\Column()
+     *
+     * @Assert\NotBlank()
+     * @Assert\Length(min=3, max=255)
      */
     private $title;
 
@@ -196,5 +210,10 @@ class Group
     public function hasUser()
     {
         return count($this->users) > 0;
+    }
+
+    public function isSuperAdministrator()
+    {
+        return self::SUPER_ADM === $this->code;
     }
 }

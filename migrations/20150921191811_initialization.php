@@ -22,7 +22,9 @@ class Initialization extends AbstractMigration
         $this->execute('CREATE SEQUENCE client_id_seq INCREMENT BY 1 MINVALUE 1 START 1;');
         $this->execute('CREATE TABLE users (id INT NOT NULL, group_id INT DEFAULT NULL, username VARCHAR(30) NOT NULL, password VARCHAR(255) NOT NULL, salt VARCHAR(255) NOT NULL, first_name VARCHAR(255) NOT NULL, last_name VARCHAR(255) NOT NULL, birth_date DATE DEFAULT NULL, email VARCHAR(255) DEFAULT NULL, locale VARCHAR(3) NOT NULL, active BOOLEAN NOT NULL, PRIMARY KEY(id));');
         $this->execute('CREATE INDEX IDX_1483A5E9FE54D947 ON users (group_id);');
+        $this->execute('CREATE UNIQUE INDEX users_username_unique ON users (username);');
         $this->execute('CREATE TABLE groups (id INT NOT NULL, code VARCHAR(20) NOT NULL, title VARCHAR(255) NOT NULL, active BOOLEAN NOT NULL, PRIMARY KEY(id));');
+        $this->execute('CREATE UNIQUE INDEX groups_code_unique ON groups (code);');
         $this->execute('CREATE TABLE group_authorization (group_id INT NOT NULL, authorization_id INT NOT NULL, PRIMARY KEY(group_id, authorization_id));');
         $this->execute('CREATE INDEX IDX_258445ADFE54D947 ON group_authorization (group_id);');
         $this->execute('CREATE INDEX IDX_258445AD2F8B0EB2 ON group_authorization (authorization_id);');

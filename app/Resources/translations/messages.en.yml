@@ -1,5 +1,9 @@
 User account is disabled.: User account is disabled
 
+locales:
+    fr: Français
+    en: English
+
 table:
     no-element: There are no element
 
@@ -24,11 +28,36 @@ home:
     title:
         home: Home
         change-password: Change my password
+        forgotten-password: Forgotten password
         show-my-account: My account
 
 users:
     title:
         list: List of users
+        list_by_group: List of groups users
+        edit: Edit an user
+        show: Show an user
+        add: Add an user
+
+    label:
+        username: Username
+        group: Group
+        name: Name
+        first_name: First name
+        last_name: Last name
+        password: Password
+        password_repeated: Repeat password
+        birth_date: Birth date
+        email: Email
+        locale: Locale
+        active: Active
+
+    message:
+        active: User is now active
+        inactive: User is now inactive
+        edit: User edited
+        add: User added
+        delete: User deleted
 
 groups:
     title:

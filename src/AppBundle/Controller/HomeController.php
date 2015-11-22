@@ -38,6 +38,18 @@ class HomeController extends Controller
     }
 
     /**
+     * @param Request $request
+     *
+     * @return array
+     *
+     * @Route("/forgotten-password", name="app_home_forgotten_password", methods={"GET", "POST"})
+     */
+    public function forgottenPasswordAction(Request $request)
+    {
+        return $this->render('home/forgottenPassword.html.twig');
+    }
+
+    /**
      * @return array
      *
      * @Route("/show-account", name="app_home_show_my_account", methods={"GET"})

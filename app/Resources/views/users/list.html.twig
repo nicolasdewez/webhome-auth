@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+
+{% import "@NdewezWebHomeCommon/macros/links.html.twig" as links %}
+{% import "macros/links.html.twig" as auth_links %}
+{% import "@NdewezWebHomeCommon/macros/icons.html.twig" as icons %}
+
+{% block title %}{{ parent() }} - {{ 'users.title.list'|trans }}{% endblock %}
+
+{% block breadcrumb %}
+    {{ include('NdewezWebHomeCommonBundle::breadcrumb.thml.twig', {
+            'links': [
+                {'title': 'home.title.home', 'route': 'app_home'},
+                {'title': 'users.title.list', 'active': true},
+            ]
+        })
+    }}
+{% endblock %}
+
+{% block body %}
+    <h2>{{ 'users.title.list'|trans }}</h2>
+
+    <table class="appUsersList">
+        <thead>
+            <tr>
+                <th>{{ 'users.label.username'|trans }}</th>
+                <th>{{ 'users.label.group'|trans }}</th>
+                <th>{{ 'users.label.name'|trans }}</th>
+                <th>{{ 'groups.label.active'|trans }}</th>
+                <th>{{ 'actions.label'|trans }} {% if is_granted('ROLE_AUTH_USERS_ADD') %}{{ links.plus('users.title.add'|trans, path('app_users_add')) }}{% endif %}</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+            <tr>
+                <td>{{ user.username }}</td>
+                <td>{{ user.group.title }} {{ auth_links.users('Utilisateurs', path('app_users_list_group', {id: user.group.id})) }}</td>
+                <td>{{ user.firstName }} {{ user.lastName }}</td>
+                <td class="appUsersList-active">
+                    {{ icons.active("", user.active) }}
+                    {{ icons.deactive("", not user.active) }}
+                </td>
+                <td class="appUsersList-actions">
+                    {% if is_granted('ROLE_AUTH_USERS_EDIT') %}
+                        {{ links.edit('actions.edit'|trans, path('app_users_edit', {'id': user.id})) }}
+                    {% else %}
+                        {{ links.show('actions.show'|trans, path('app_users_show', {'id': user.id})) }}
+                    {% endif %}
+
+                    {% if is_granted('ROLE_AUTH_USERS_ACTIV') and user != app.user and (not user.superAdministrator or app.user.superAdministrator) %}
+                        {{ links.deactive('actions.deactivate'|trans, null, path('app_users_deactivate', {'id': user.id}), user.active) }}
+                        {{ links.active('actions.activate'|trans, null, path('app_users_activate', {'id': user.id}), not user.active) }}
+                    {% endif %}
+
+                    {% if is_granted('ROLE_AUTH_USERS_DEL') and user != app.user and (not user.superAdministrator or app.user.superAdministrator) %}
+                        {{ links.delete('actions.delete'|trans, null, path('app_users_delete', {'id': user.id})) }}
+                    {% endif %}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <th colspan="5" class="text-center">{{ 'table.no-element'|trans }}</th>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        new UsersList($('.appUsersList'));
+    </script>
+{% endblock %}

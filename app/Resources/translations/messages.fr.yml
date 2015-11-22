@@ -1,5 +1,9 @@
 User account is disabled.: Compte utilisateur désactivé
 
+locales:
+    fr: Français
+    en: English
+
 table:
     no-element: Aucun élément
 
@@ -24,11 +28,36 @@ home:
     title:
         home: Accueil
         change-password: Changer mon mot de passe
+        forgotten-password: Mot de passe oublié
         show-my-account: Mon compte
 
 users:
     title:
         list: Liste des utilisateurs
+        list_by_group: Liste des utilisateurs d'un groupe
+        edit: Modifier un utilisateur
+        show: Voir un utilisateur
+        add: Ajouter un utilisateur
+
+    label:
+        username: Nom d'utilisateur
+        group: Groupe
+        name: Nom
+        first_name: Prénom
+        last_name: Nom
+        password: Mot de passe
+        password_repeated: Répêter le mot de passe
+        birth_date: Date de naissance
+        email: Email
+        locale: Langue
+        active: Actif
+
+    message:
+        active: L'utilisateur est maintenant actif
+        inactive: L'utilisateur est maintenant inactif
+        edit: Utilisateur modifié
+        add: Utilisateur ajouté
+        delete: Utilisateur supprimé
 
 groups:
     title:

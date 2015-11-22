@@ -42,8 +42,8 @@
                 </td>
                 <td class="appGroupsList-users">
                     {{ group.users|length }}
-                    {% if is_granted('ROLE_AUTH_USERS') %}
-                        {{ auth_links.users('Utilisateurs', '#') }}
+                    {% if is_granted('ROLE_AUTH_USERS_SHOW') %}
+                        {{ auth_links.users('Utilisateurs', path('app_users_list_group', {id: group.id})) }}
                     {% endif %}
                 </td>
                 <td class="appGroupsList-applications">{{ group.applications|length }}</td>
@@ -72,7 +72,7 @@
             </tr>
         {% else %}
             <tr>
-                <th colspan="7">{{ 'table.no-element'|trans }}</th>
+                <th colspan="7" class="text-center">{{ 'table.no-element'|trans }}</th>
             </tr>
         {% endfor %}
         </tbody>

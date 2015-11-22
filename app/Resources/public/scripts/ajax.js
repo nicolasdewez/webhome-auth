@@ -15,7 +15,7 @@ function Ajax()
                 success();
             }
         }).fail(function(object, status, error) {
-            $this.notifier.error(status);
+            $this.notifier.error(error);
             if (typeof fail === 'function') {
                 fail();
             }

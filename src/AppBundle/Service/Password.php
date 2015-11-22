@@ -3,20 +3,17 @@
 namespace AppBundle\Service;
 
 use AppBundle\Entity\User;
-use AppBundle\Exception\PasswordException;
-use AppBundle\Model\Password as PasswordModel;
 use Doctrine\Bundle\DoctrineBundle\Registry as Doctrine;
 use Ndewez\WebHome\CommonBundle\Service\Validator;
-use Ndewez\WebHome\AuthApiBundle\V0\Model\ChangePassword;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
  * Class Password.
  */
 class Password
 {
-    /** @var EncoderFactoryInterface */
-    private $encoderFactory;
+    /** @var UserPasswordEncoderInterface */
+    private $encoder;
 
     /** @var Doctrine */
     private $doctrine;
@@ -25,53 +22,29 @@ class Password
     private $validator;
 
     /**
-     * @param Doctrine                $doctrine
-     * @param EncoderFactoryInterface $encoderFactory
-     * @param Validator               $validator
+     * @param Doctrine                     $doctrine
+     * @param UserPasswordEncoderInterface $encoder
+     * @param Validator                    $validator
      */
-    public function __construct(Doctrine $doctrine, EncoderFactoryInterface $encoderFactory, Validator $validator)
+    public function __construct(Doctrine $doctrine, UserPasswordEncoderInterface $encoder, Validator $validator)
     {
-        $this->encoderFactory = $encoderFactory;
+        $this->encoder = $encoder;
         $this->doctrine = $doctrine;
         $this->validator = $validator;
     }
 
     /**
-     * @param User           $user
-     * @param ChangePassword $changePassword
-     *
-     * @throws PasswordException
+     * @param User   $user
+     * @param string $originalPassword
      */
-    private function checkChange(User $user, ChangePassword $changePassword)
+    public function encodePassword(User $user, $originalPassword = null)
     {
-        $encoder = $this->encoderFactory->getEncoder($user);
+        if (null === $user->getPassword()) {
+            $user->setPassword($originalPassword);
 
-        $model = new PasswordModel();
-        $model->setValue($changePassword->getNewPassword())
-            ->setRepeat($changePassword->getRepeatPassword())
-            ->setCurrent($encoder->encodePassword($changePassword->getOldPassword(), $user->getSalt()))
-            ->setCurrentSaved($user->getPassword());
-
-        $errors = $this->validator->validateToArray($model);
-        if (count($errors)) {
-            throw new PasswordException($errors);
+            return;
         }
-    }
 
-    /**
-     * @param User           $user
-     * @param ChangePassword $changePassword
-     *
-     * @throws PasswordException
-     */
-    public function change(User $user, ChangePassword $changePassword)
-    {
-        $this->checkChange($user, $changePassword);
-
-        $encoder = $this->encoderFactory->getEncoder($user);
-        $user->initSalt();
-        $user->setPassword($encoder->encodePassword($changePassword->getNewPassword(), $user->getSalt()));
-
-        $this->doctrine->getManager()->flush();
+        $user->setPassword($this->encoder->encodePassword($user, $user->getPassword()));
     }
 }

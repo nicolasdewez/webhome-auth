@@ -7,7 +7,7 @@ parameters:
     locale: en
     project.name: WebHome
     app.name: Auth
-    app.icon: glyphicon-eye-open
+    app.icon: glyphicon-lock
 
 framework:
     #esi:             ~
