@@ -98,3 +98,12 @@ authorizations:
 
     message:
         edit: Les authorizations du groupe ont été modifiées
+
+change_password:
+    label:
+        password: Mot de passe
+        new_password_first: Nouveau mot de passe
+        new_password_second: Répeter le mot de passe
+
+    message:
+        changed: Mot de passe modifié. Vous pouvez l'utiliser dès maintenant.

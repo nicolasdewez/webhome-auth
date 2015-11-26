@@ -98,3 +98,12 @@ authorizations:
 
     message:
         edit: Authorizations of group edited
+
+change_password:
+    label:
+        password: Password
+        new_password_first: New password
+        new_password_second: Repeat password
+
+    message:
+        changed: Password changed. You can use immediatly.

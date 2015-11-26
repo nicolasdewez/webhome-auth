@@ -212,6 +212,9 @@ class Group
         return count($this->users) > 0;
     }
 
+    /**
+     * @return bool
+     */
     public function isSuperAdministrator()
     {
         return self::SUPER_ADM === $this->code;

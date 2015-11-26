@@ -3,6 +3,7 @@
 namespace AppBundle\Service;
 
 use AppBundle\Entity\User;
+use Doctrine\ORM\EntityManagerInterface;
 use Ndewez\WebHome\CommonBundle\Service\Validator;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
@@ -11,6 +12,9 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
  */
 class Password
 {
+    /** @var EntityManagerInterface */
+    private $manager;
+
     /** @var UserPasswordEncoderInterface */
     private $encoder;
 
@@ -18,11 +22,13 @@ class Password
     private $validator;
 
     /**
+     * @param EntityManagerInterface       $manager
      * @param UserPasswordEncoderInterface $encoder
      * @param Validator                    $validator
      */
-    public function __construct(UserPasswordEncoderInterface $encoder, Validator $validator)
+    public function __construct(EntityManagerInterface $manager, UserPasswordEncoderInterface $encoder, Validator $validator)
     {
+        $this->manager = $manager;
         $this->encoder = $encoder;
         $this->validator = $validator;
     }
@@ -39,6 +45,18 @@ class Password
             return;
         }
 
+        $user->initSalt();
         $user->setPassword($this->encoder->encodePassword($user, $user->getPassword()));
+    }
+
+    /**
+     * @param User   $user
+     * @param string $password
+     */
+    public function changePassword(User $user, $password)
+    {
+        $user->setPassword($password);
+        $this->encodePassword($user);
+        $this->manager->flush();
     }
 }

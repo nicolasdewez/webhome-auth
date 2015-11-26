@@ -1,3 +1,6 @@
-username.not_found: Nom d'utilisateur inconnu
+username.not_found: Nom d'utilisateur inconnu.
+
 password:
-    not_contains_username: Le mot de passe ne doit pas contenir le nom d'utilisateur
+    not_contains_username: Le mot de passe ne doit pas contenir le nom d'utilisateur.
+    old_new_identical: L'ancien et le nouveau mot de passe ne peuvent être identiques.
+    current: Le mot de passe courant n'est pas valide.

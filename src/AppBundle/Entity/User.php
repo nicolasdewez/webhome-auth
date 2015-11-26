@@ -2,11 +2,11 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Validator\Constraints as AppAssert;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * User.
@@ -16,6 +16,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
  * }))
  * @ORM\Entity
  * @UniqueEntity("username", groups={"Add", "Default"})
+ * @AppAssert\PasswordNotContainsUsername
  */
 class User implements AdvancedUserInterface, \Serializable
 {
@@ -121,7 +122,7 @@ class User implements AdvancedUserInterface, \Serializable
 
     public function __construct()
     {
-        $this->salt = md5(uniqid());
+        $this->salt = $this->initSalt();
         $this->active = true;
     }
 
@@ -457,20 +458,5 @@ class User implements AdvancedUserInterface, \Serializable
     public function isSuperAdministrator()
     {
         return $this->group->isSuperAdministrator();
-    }
-
-    /**
-     * @param ExecutionContextInterface $context
-     *
-     * @Assert\Callback
-     */
-    public function checkPassword(ExecutionContextInterface $context)
-    {
-        if (false !== stripos($this->password, $this->username)) {
-            $context
-                ->buildViolation('Le mot de passe nde doit pas contenir le username')
-                ->atPath('password')
-                ->addViolation();
-        }
     }
 }

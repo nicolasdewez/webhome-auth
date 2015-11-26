@@ -2,7 +2,9 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Model\ChangePassword;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Response;
@@ -34,7 +36,16 @@ class HomeController extends Controller
      */
     public function changePasswordAction(Request $request)
     {
-        return $this->render('home/changePassword.html.twig');
+        $changePassword = new ChangePassword($this->getUser());
+        $form = $this->createForm('app_change_password', $changePassword);
+        if ($form->handleRequest($request) && $form->isValid()) {
+            $this->get('app.password')->changePassword($this->getUser(), $changePassword->getPassword());
+            $this->get('session')->getFlashBag()->add('notice', $this->get('translator')->trans('change_password.message.changed'));
+
+            return new RedirectResponse($this->generateUrl('app_home_show_my_account'));
+        }
+
+        return $this->render('home/changePassword.html.twig', ['form' => $form->createView()]);
     }
 
     /**

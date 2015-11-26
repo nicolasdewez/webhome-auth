@@ -9,6 +9,7 @@
         </service>
 
         <service id="app.password" class="AppBundle\Service\Password">
+            <argument type="service" id="doctrine.orm.entity_manager" />
             <argument type="service" id="security.password_encoder" />
             <argument type="service" id="webhome.validator" />
         </service>

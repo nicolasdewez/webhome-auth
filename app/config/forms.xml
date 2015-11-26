@@ -24,5 +24,14 @@
         <service id="app.form.type.authorization_group_collection" class="AppBundle\Form\Type\AuthorizationGrantedCollectionType">
             <tag name="form.type" alias="app_authorization_granted_collection" />
         </service>
+
+        <service id="app.form.type.change_password" class="AppBundle\Form\Type\ChangePasswordType">
+            <tag name="form.type" alias="app_change_password" />
+        </service>
+
+        <service id="app.validator.constraints.check_current_password" class="AppBundle\Validator\Constraints\CheckCurrentPasswordValidator">
+            <argument type="service" id="security.password_encoder" />
+            <tag name="validator.constraint_validator" alias="app_check_current_password" />
+        </service>
     </services>
 </container>

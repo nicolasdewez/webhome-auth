@@ -1,3 +1,6 @@
-username.not_found: Username not found
+username.not_found: Username not found.
+
 password:
-    not_contains_username: Password don't have to contains the username
+    not_contains_username: Password don't have to contains the username.
+    old_new_identical: Old and new passwords can't be identical.
+    current: Current password is not valid.
