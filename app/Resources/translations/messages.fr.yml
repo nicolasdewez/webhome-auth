@@ -59,6 +59,11 @@ users:
         add: Utilisateur ajouté
         delete: Utilisateur supprimé
 
+    error:
+        not_delete: Cet utilisateur ne peut pas être supprimé
+        not_deactivate: Cet utilisateur ne peut pas être désactivé
+        not_activate: Cet utilisateur ne peut pas être activé
+
 groups:
     title:
         list: Liste des groupes
@@ -83,3 +88,13 @@ groups:
 
     error:
         contains_user: Le groupe ne peut pas être supprimé parce qu'il contient des utilisateurs
+        not_deactivate: Ce groupe ne peut pas être désactivé
+        not_activate: Ce groupe ne peut pas être activé
+
+authorizations:
+    title:
+        list: Liste des authorisations d'un groupe
+        list_details: List des authorisations : %group%
+
+    message:
+        edit: Les authorizations du groupe ont été modifiées

@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme form 'authorizations/form_theme_list.html.twig' %}
+
+{% block title %}{{ parent() }} - {{ 'authorizations.title.list'|trans }}{% endblock %}
+
+{% block breadcrumb %}
+    {{ include('NdewezWebHomeCommonBundle::breadcrumb.thml.twig', {
+            'links': [
+                {'title': 'home.title.home', 'route': 'app_home'},
+                {'title': 'groups.title.list', 'route': 'app_groups_list'},
+                {'title': 'authorizations.title.list', 'active': true},
+            ]
+        })
+    }}
+{% endblock %}
+
+{% block body %}
+    <h2>{{ 'authorizations.title.list_details'|trans({'%group%': group.title}) }}</h2>
+
+    {{ form(form) }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        new AuthorizationsList($('#app_authorization_granted_collection'));
+    </script>
+{% endblock %}

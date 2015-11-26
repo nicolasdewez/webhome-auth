@@ -43,14 +43,14 @@
                 <td class="appGroupsList-users">
                     {{ group.users|length }}
                     {% if is_granted('ROLE_AUTH_USERS_SHOW') %}
-                        {{ auth_links.users('Utilisateurs', path('app_users_list_group', {id: group.id})) }}
+                        {{ auth_links.users('groups.label.users'|trans, path('app_users_list_group', {id: group.id})) }}
                     {% endif %}
                 </td>
                 <td class="appGroupsList-applications">{{ group.applications|length }}</td>
                 <td class="appGroupsList-authorizations">
                     {{ group.authorizations|length }}
                     {% if is_granted('ROLE_AUTH_GRPS_AUTHZ') %}
-                        {{ auth_links.authorizations('Autorisations', '#') }}
+                        {{ auth_links.authorizations('groups.label.authorizations'|trans, path('app_authorizations_list', {groupId: group.id})) }}
                     {% endif %}
                 </td>
                 <td class="appGroupsList-actions">
@@ -60,12 +60,12 @@
                         {{ links.show('actions.show'|trans, path('app_groups_show', {'id': group.id})) }}
                     {% endif %}
 
-                    {% if is_granted('ROLE_AUTH_GRPS_ACTIV') %}
+                    {% if is_granted('ROLE_AUTH_GRPS_ACTIV') and not group.superAdministrator %}
                         {{ links.deactive('actions.deactivate'|trans, null, path('app_groups_deactivate', {'id': group.id}), group.active) }}
                         {{ links.active('actions.activate'|trans, null, path('app_groups_activate', {'id': group.id}), not group.active) }}
                     {% endif %}
 
-                    {% if not group.hasUser and is_granted('ROLE_AUTH_GRPS_DEL') %}
+                    {% if is_granted('ROLE_AUTH_GRPS_DEL') and not group.hasUser and not group.superAdministrator %}
                         {{ links.delete('actions.delete'|trans, null, path('app_groups_delete', {'id': group.id})) }}
                     {% endif %}
                 </td>

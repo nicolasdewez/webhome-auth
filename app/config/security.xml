@@ -4,10 +4,11 @@
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
-        <service id="app.authorization" class="AppBundle\Service\Authorization" />
+        <service id="app.authorization" class="AppBundle\Service\Authorization">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+        </service>
 
         <service id="app.password" class="AppBundle\Service\Password">
-            <argument type="service" id="doctrine"/>
             <argument type="service" id="security.password_encoder" />
             <argument type="service" id="webhome.validator" />
         </service>

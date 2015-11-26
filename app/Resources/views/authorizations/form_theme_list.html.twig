@@ -1,0 +1,19 @@
+{% extends 'form_div_layout.html.twig' %}
+
+{% block collection_row %}
+    {{- form_widget(form) -}}
+{% endblock %}
+
+{% block checkbox_row %}
+    {{- form_widget(form) -}}
+{% endblock %}
+
+
+{% block collection_widget %}
+    {% for row in form %}
+        <div class="form-group">
+            {{ form_row(row.granted) }}
+            <label>{{ row.vars.value.authorization.code }}{{ form_widget(row.authorization) }}</label>
+        </div>
+    {% endfor %}
+{% endblock collection_widget %}

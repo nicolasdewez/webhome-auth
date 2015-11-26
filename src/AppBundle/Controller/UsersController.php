@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
  * Class UsersController.
@@ -42,7 +43,7 @@ class UsersController extends AbstractController
      */
     public function listByGroupAction(Group $group)
     {
-        $users = $this->get('doctrine.orm.entity_manager')->getRepository('AppBundle:User')->findBy(['group'=> $group], ['username' => 'ASC']);
+        $users = $this->get('doctrine.orm.entity_manager')->getRepository('AppBundle:User')->findBy(['group' => $group], ['username' => 'ASC']);
 
         return $this->render('users/listByGroup.html.twig', ['users' => $users, 'group' => $group]);
     }
@@ -59,7 +60,7 @@ class UsersController extends AbstractController
     public function editAction(User $user, Request $request)
     {
         $originalPassword = $user->getPassword();
-        $form = $this->get('form.factory')->create('app_user', $user, ['delete' => true]);
+        $form = $this->get('form.factory')->create('app_user', $user, ['delete' => $this->isUserDeletable($user), 'activate' => $this->isUserActivate($user)]);
 
         if ($form->handleRequest($request) && $form->isValid()) {
             $manager = $this->get('doctrine.orm.entity_manager');
@@ -144,6 +145,10 @@ class UsersController extends AbstractController
     {
         $this->assertXmlHttpRequest($request);
 
+        if (!$this->isUserActivate($user)) {
+            throw new BadRequestHttpException($this->get('translator')->trans('users.error.not_activate'));
+        }
+
         $user->setActive(true);
         $this->get('doctrine.orm.entity_manager')->flush();
 
@@ -162,6 +167,10 @@ class UsersController extends AbstractController
     public function deactivateAction(User $user, Request $request)
     {
         $this->assertXmlHttpRequest($request);
+
+        if (!$this->isUserActivate($user)) {
+            throw new BadRequestHttpException($this->get('translator')->trans('users.error.not_deactivate'));
+        }
 
         $user->setActive(false);
         $this->get('doctrine.orm.entity_manager')->flush();
@@ -182,10 +191,34 @@ class UsersController extends AbstractController
     {
         $this->assertXmlHttpRequest($request);
 
+        if (!$this->isUserDeletable($user)) {
+            throw new BadRequestHttpException($this->get('translator')->trans('users.error.not_delete'));
+        }
+
         $manager = $this->get('doctrine.orm.entity_manager');
         $manager->remove($user);
         $manager->flush();
 
         return new JsonResponse(['message' => $this->get('translator')->trans('users.message.delete')]);
+    }
+
+    /**
+     * @param User $user
+     *
+     * @return bool
+     */
+    private function isUserDeletable(User $user)
+    {
+        return $this->isGranted('ROLE_AUTH_USERS_DEL') && $user != $this->getUser() && ($user->isSuperAdministrator() || $this->getUser()->isSuperAdministrator());
+    }
+
+    /**
+     * @param User $user
+     *
+     * @return bool
+     */
+    private function isUserActivate(User $user)
+    {
+        return $this->isGranted('ROLE_AUTH_USERS_ACTIV') && $user != $this->getUser() && ($user->isSuperAdministrator() || $this->getUser()->isSuperAdministrator());
     }
 }

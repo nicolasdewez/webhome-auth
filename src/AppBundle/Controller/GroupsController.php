@@ -43,7 +43,7 @@ class GroupsController extends AbstractController
      */
     public function editAction(Group $group, Request $request)
     {
-        $form = $this->get('form.factory')->create('app_group', $group, ['delete' => !$group->hasUser()]);
+        $form = $this->get('form.factory')->create('app_group', $group, ['delete' => $this->isGroupDeletable($group), 'activate' => $this->isGroupActivate($group)]);
 
         if ($form->handleRequest($request) && $form->isValid()) {
             $manager = $this->get('doctrine.orm.entity_manager');
@@ -68,7 +68,7 @@ class GroupsController extends AbstractController
             $this->get('session')->getFlashBag()->add('notice', $this->get('translator')->trans('groups.message.edit'));
         }
 
-        return $this->render('groups/edit.html.twig', ['form' => $form->createView()]);
+        return $this->render('groups/edit.html.twig', ['form' => $form->createView(), 'group' => $group]);
     }
 
     /**
@@ -125,6 +125,10 @@ class GroupsController extends AbstractController
     {
         $this->assertXmlHttpRequest($request);
 
+        if (!$this->isGroupDeletable($group)) {
+            throw new BadRequestHttpException($this->get('translator')->trans('groups.error.not_activate'));
+        }
+
         $group->setActive(true);
         $this->get('doctrine.orm.entity_manager')->flush();
 
@@ -143,6 +147,10 @@ class GroupsController extends AbstractController
     public function deactivateAction(Group $group, Request $request)
     {
         $this->assertXmlHttpRequest($request);
+
+        if (!$this->isGroupDeletable($group)) {
+            throw new BadRequestHttpException($this->get('translator')->trans('groups.error.not_deactivate'));
+        }
 
         $group->setActive(false);
         $this->get('doctrine.orm.entity_manager')->flush();
@@ -163,7 +171,7 @@ class GroupsController extends AbstractController
     {
         $this->assertXmlHttpRequest($request);
 
-        if ($group->hasUser()) {
+        if (!$this->isGroupDeletable($group)) {
             throw new BadRequestHttpException($this->get('translator')->trans('groups.error.contains_user'));
         }
 
@@ -172,5 +180,25 @@ class GroupsController extends AbstractController
         $manager->flush();
 
         return new JsonResponse(['message' => $this->get('translator')->trans('groups.message.delete')]);
+    }
+
+    /**
+     * @param Group $group
+     *
+     * @return bool
+     */
+    private function isGroupDeletable(Group $group)
+    {
+        return $this->isGranted('ROLE_AUTH_GRPS_DEL') && !$group->hasUser() && !$group->isSuperAdministrator();
+    }
+
+    /**
+     * @param Group $group
+     *
+     * @return bool
+     */
+    private function isGroupActivate(Group $group)
+    {
+        return $this->isGranted('ROLE_AUTH_GRPS_ACTIV') && !$group->isSuperAdministrator();
     }
 }

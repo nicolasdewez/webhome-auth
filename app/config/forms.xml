@@ -15,5 +15,14 @@
         <service id="app.form.type.user" class="AppBundle\Form\Type\UserType">
             <tag name="form.type" alias="app_user" />
         </service>
+
+        <service id="app.form.type.authorization_granted" class="AppBundle\Form\Type\AuthorizationGrantedType">
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+            <tag name="form.type" alias="app_authorization_granted" />
+        </service>
+
+        <service id="app.form.type.authorization_group_collection" class="AppBundle\Form\Type\AuthorizationGrantedCollectionType">
+            <tag name="form.type" alias="app_authorization_granted_collection" />
+        </service>
     </services>
 </container>

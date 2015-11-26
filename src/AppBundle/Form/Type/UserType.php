@@ -46,7 +46,12 @@ class UserType extends AbstractType
             ]);
         }
 
-        $builder->add('active', null, ['required' => false, 'label' => 'users.label.active']);
+        $disabled = false;
+        if (!$options['activate']) {
+            $disabled = true;
+        }
+
+        $builder->add('active', null, ['required' => false, 'label' => 'users.label.active', 'attr' => ['disabled' => $disabled]]);
 
         if ($options['submit']) {
             $builder->add('submit', 'submit', ['label' => 'actions.submit', 'attr' => ['class' => 'btn btn-primary']]);
@@ -62,12 +67,14 @@ class UserType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefined(['delete', 'submit']);
+        $resolver->setDefined(['delete', 'submit', 'activate']);
         $resolver->setAllowedTypes('delete', 'boolean');
         $resolver->setAllowedTypes('submit', 'boolean');
+        $resolver->setAllowedTypes('activate', 'boolean');
         $resolver->setDefaults([
             'data_class' => 'AppBundle\\Entity\\User',
             'delete' => false,
+            'activate' => true,
             'submit' => true,
         ]);
         $resolver->setDefault('disabled', function (Options $options) {

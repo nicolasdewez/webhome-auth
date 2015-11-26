@@ -17,11 +17,15 @@ class GroupType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $disabled = false;
+        if (!$options['activate']) {
+            $disabled = true;
+        }
+
         $builder
             ->add('code', null, ['label' => 'groups.label.code'])
             ->add('title', null, ['label' => 'groups.label.title'])
-            ->add('active', null, ['required' => false, 'label' => 'groups.label.active'])
-        ;
+            ->add('active', null, ['required' => false, 'label' => 'groups.label.active', 'attr' => ['disabled' => $disabled]]);
 
         if ($options['submit']) {
             $builder->add('submit', 'submit', ['label' => 'actions.submit', 'attr' => ['class' => 'btn btn-primary']]);
@@ -37,12 +41,13 @@ class GroupType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefined(['delete', 'submit']);
+        $resolver->setDefined(['delete', 'submit', 'activate']);
         $resolver->setAllowedTypes('delete', 'boolean');
         $resolver->setAllowedTypes('submit', 'boolean');
         $resolver->setDefaults([
             'data_class' => 'AppBundle\\Entity\\Group',
             'delete' => false,
+            'activate' => true,
             'submit' => true,
         ]);
         $resolver->setDefault('disabled', function (Options $options) {

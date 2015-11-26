@@ -59,6 +59,11 @@ users:
         add: User added
         delete: User deleted
 
+    error:
+        not_delete: User can't be deleted
+        not_deactivate: User can't be deactivate
+        not_activate: User can't be activate
+
 groups:
     title:
         list: List of groups
@@ -83,3 +88,13 @@ groups:
 
     error:
         contains_user: Group can't be deleted because it contains user(s)
+        not_deactivate: Group can't be deactivate
+        not_activate: Group can't be activate
+
+authorizations:
+    title:
+        list: List of groups authorizations
+        list_details: List of authorizations : %group%
+
+    message:
+        edit: Authorizations of group edited
