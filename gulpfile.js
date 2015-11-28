@@ -4,12 +4,14 @@ var gulp = require('gulp'),
     rimraf = require('rimraf'),
     bootstrapPath = 'bower_components/bootstrap/dist/',
     jqueryPath = 'bower_components/jquery/dist/',
+    commonPath = 'vendor/nicolasdewez/webhome-common/Resources/public/scripts/dist/',
     srcPath = 'app/Resources/public/',
     cssPath = srcPath + 'stylesheets/',
     cssFile = cssPath + 'app.less',
     jsPath = srcPath + 'scripts/',
     bootstrapJsFile = bootstrapPath + 'js/bootstrap.js',
     jqueryJsFile = jqueryPath + 'jquery.js',
+    commonJsFile = commonPath + 'common.js',
     jsFile = jsPath + '*',
     imgPath = srcPath + 'images/*',
     fontPath = bootstrapPath + 'fonts/*',
@@ -44,14 +46,14 @@ gulp.task('cssDist', function() {
 });
 
 gulp.task('js', function() {
-    gulp.src([jqueryJsFile, bootstrapJsFile, jsFile])
+    gulp.src([jqueryJsFile, bootstrapJsFile, commonJsFile, jsFile])
         .pipe(concat('app.js'))
         .pipe(tasks.plumber('app.js'))
         .pipe(gulp.dest(distJsCssPath));
 });
 
 gulp.task('jsDist', function() {
-    gulp.src([jqueryJsFile, bootstrapJsFile, jsFile])
+    gulp.src([jqueryJsFile, bootstrapJsFile, commonJsFile, jsFile])
         .pipe(concat('app.js'))
         .pipe(tasks.plumber())
         .pipe(tasks.uglify())

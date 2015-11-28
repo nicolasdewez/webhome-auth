@@ -1,3 +1,13 @@
 # WebHome Project - Auth
 
-* docker-compose and behat configuration aren't finished
+## Installation
+
+```sh
+composer install
+```
+
+```sh
+bower install
+npm install
+gulp dist
+```
