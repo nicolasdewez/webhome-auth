@@ -32,13 +32,6 @@ class Authorization
     private $code;
 
     /**
-     * @var string
-     *
-     * @ORM\Column()
-     */
-    private $title;
-
-    /**
      * @var Application
      *
      * @ORM\ManyToOne(targetEntity="Application", inversedBy="authorizations", cascade={"persist"})
@@ -89,30 +82,6 @@ class Authorization
     public function getCode()
     {
         return $this->code;
-    }
-
-    /**
-     * Set title.
-     *
-     * @param string $title
-     *
-     * @return Authorization
-     */
-    public function setTitle($title)
-    {
-        $this->title = $title;
-
-        return $this;
-    }
-
-    /**
-     * Get title.
-     *
-     * @return string
-     */
-    public function getTitle()
-    {
-        return $this->title;
     }
 
     /**

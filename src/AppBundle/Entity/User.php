@@ -34,9 +34,9 @@ class User implements AdvancedUserInterface, \Serializable
      *
      * @ORM\Column(length=30)
      *
-     * @Assert\NotBlank
-     * @Assert\Length(min=3, max=30)
-     * @Assert\Regex("/^[A-Z_0-9]+$/i")
+     * @Assert\NotBlank(groups={"Add", "Default"})
+     * @Assert\Length(min=3, max=30, groups={"Add", "Default"})
+     * @Assert\Regex("/^[A-Z_0-9]+$/i", groups={"Add", "Default"})
      */
     private $username;
 
@@ -62,7 +62,7 @@ class User implements AdvancedUserInterface, \Serializable
      *
      * @ORM\ManyToOne(targetEntity="Group", inversedBy="users")
      *
-     * @Assert\NotBlank
+     * @Assert\NotBlank(groups={"Add", "Default"})
      */
     private $group;
 
@@ -71,7 +71,7 @@ class User implements AdvancedUserInterface, \Serializable
      *
      * @ORM\Column
      *
-     * @Assert\NotBlank
+     * @Assert\NotBlank(groups={"Add", "Account", "Default"})
      * @Assert\Length(max=255)
      */
     private $firstName;
@@ -81,8 +81,8 @@ class User implements AdvancedUserInterface, \Serializable
      *
      * @ORM\Column
      *
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
+     * @Assert\NotBlank(groups={"Add", "Account", "Default"})
+     * @Assert\Length(max=255, groups={"Add", "Account", "Default"})
      */
     private $lastName;
 
@@ -91,7 +91,7 @@ class User implements AdvancedUserInterface, \Serializable
      *
      * @ORM\Column(type="date", nullable=true)
      *
-     * @Assert\Date
+     * @Assert\Date(groups={"Add", "Account", "Default"})
      */
     private $birthDate;
 
@@ -100,7 +100,7 @@ class User implements AdvancedUserInterface, \Serializable
      *
      * @ORM\Column(nullable=true)
      *
-     * @Assert\Email
+     * @Assert\Email(groups={"Add", "Account", "Default"})
      */
     private $email;
 
@@ -109,7 +109,7 @@ class User implements AdvancedUserInterface, \Serializable
      *
      * @ORM\Column(length=3)
      *
-     * @Assert\Choice(choices={"fr", "en"})
+     * @Assert\Choice(choices={"fr", "en"}, groups={"Add", "Account", "Default"})
      */
     private $locale;
 

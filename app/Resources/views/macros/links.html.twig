@@ -7,3 +7,8 @@
     {% import '@NdewezWebHomeCommon/macros/links.html.twig' as links %}
     {{ links.link('glyphicon glyphicon-lock', title, href, rel) }}
 {% endmacro %}
+
+{% macro forgotten_password(title, href) %}
+    {% import '@NdewezWebHomeCommon/macros/links.html.twig' as links %}
+    {{ links.link_text('glyphicon glyphicon-refresh', title, href) }}
+{% endmacro %}

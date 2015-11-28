@@ -1,9 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
-    <div class="form">
-        <h2>{{ 'login.title'|trans }}</h2>
+{% import 'macros/links.html.twig' as links %}
 
-        {{ form(form) }}
+{% block body %}
+    <h2>{{ 'login.title'|trans }}</h2>
+
+    {{ form(form) }}
+
+    <div class="blockLinks">
+        {{ links.forgotten_password('login.link.forgotten_password'|trans, path('app_home_forgotten_password')) }}
     </div>
 {% endblock %}

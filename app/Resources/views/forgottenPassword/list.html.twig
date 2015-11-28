@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% import "@NdewezWebHomeCommon/macros/links.html.twig" as links %}
+
+{% block title %}{{ parent() }} - {{ 'forgotten_passwords.title.list'|trans }}{% endblock %}
+
+{% block breadcrumb %}
+    {{ include('NdewezWebHomeCommonBundle::breadcrumb.thml.twig', {
+            'links': [
+                {'title': 'home.title.home', 'route': 'app_home'},
+                {'title': 'forgotten_passwords.title.list', 'active': true},
+            ]
+        })
+    }}
+{% endblock %}
+
+{% block body %}
+    <h2>{{ 'forgotten_passwords.title.list'|trans }}</h2>
+
+    <table class="appForgottenPasswordsList">
+        <thead>
+            <tr>
+                <th>{{ 'forgotten_passwords.label.username'|trans }}</th>
+                <th>{{ 'forgotten_passwords.label.first_name'|trans }}</th>
+                <th>{{ 'forgotten_passwords.label.last_name'|trans }}</th>
+                <th>{{ 'forgotten_passwords.label.email'|trans }}</th>
+                <th>{{ 'actions.label'|trans }}</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for forgottenPassword in elements %}
+            <tr>
+                <td>{{ forgottenPassword.username }}</td>
+                <td>{{ forgottenPassword.firstName }}</td>
+                <td>{{ forgottenPassword.lastName }}</td>
+                <td>{{ forgottenPassword.email }}</td>
+
+                <td class="appForgottenPasswordsList-actions">
+                    {% if is_granted('ROLE_AUTH_FOPWD_DEL') %}
+                        {{ links.delete('actions.delete'|trans, null, path('app_forgotten_password_delete', {'id': forgottenPassword.id})) }}
+                    {% endif %}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <th colspan="5" class="text-center">{{ 'table.no_element'|trans }}</th>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        new ForgottenPasswordsList($('.appForgottenPasswordsList'));
+    </script>
+{% endblock %}

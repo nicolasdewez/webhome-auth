@@ -14,30 +14,34 @@ class AuthorizationsAuth extends AbstractMigration
 
         $idApplication = $this->getApplicationId('AUTH', 'WebHome Auth');
         $data = [
-            ['\'AUTH_GRPS\'', '\'authorization.auth.groups.title\''],
-            ['\'AUTH_GRPS_ADD\'', '\'authorization.auth.groups.title\''],
-            ['\'AUTH_GRPS_EDIT\'', '\'authorization.auth.groups.edit\''],
-            ['\'AUTH_GRPS_SHOW\'', '\'authorization.auth.groups.show\''],
-            ['\'AUTH_GRPS_DEL\'', '\'authorization.auth.groups.del\''],
-            ['\'AUTH_GRPS_ACTIV\'', '\'authorization.auth.groups.activ\''],
-            ['\'AUTH_GRPS_AUTHZ\'', '\'authorization.auth.groups.authz.title\''],
-            ['\'AUTH_GRPS_AUTHZ_EDIT\'', '\'authorization.auth.groups.authz.edit\''],
-            ['\'AUTH_GRPS_AUTHZ_SHOW\'', '\'authorization.auth.groups.authz.show\''],
-            ['\'AUTH_USERS\'', '\'authorization.auth.users.title\''],
-            ['\'AUTH_USERS_ADD\'', '\'authorization.auth.users.title\''],
-            ['\'AUTH_USERS_EDIT\'', '\'authorization.auth.users.edit\''],
-            ['\'AUTH_USERS_SHOW\'', '\'authorization.auth.users.show\''],
-            ['\'AUTH_USERS_DEL\'', '\'authorization.auth.users.del\''],
-            ['\'AUTH_USERS_ACTIV\'', '\'authorization.auth.users.activ\''],
+            '\'AUTH_GRPS\'',
+            '\'AUTH_GRPS_ADD\'',
+            '\'AUTH_GRPS_EDIT\'',
+            '\'AUTH_GRPS_SHOW\'',
+            '\'AUTH_GRPS_DEL\'',
+            '\'AUTH_GRPS_ACTIV\'',
+            '\'AUTH_GRPS_AUTHZ\'',
+            '\'AUTH_GRPS_AUTHZ_EDIT\'',
+            '\'AUTH_GRPS_AUTHZ_SHOW\'',
+            '\'AUTH_USERS\'',
+            '\'AUTH_USERS_ADD\'',
+            '\'AUTH_USERS_EDIT\'',
+            '\'AUTH_USERS_SHOW\'',
+            '\'AUTH_USERS_DEL\'',
+            '\'AUTH_USERS_ACTIV\'',
+            '\'AUTH_FOPWD\'',
+            '\'AUTH_FOPWD_SHOW\'',
+            '\'AUTH_FOPWD_DEL\'',
         ];
 
         $values = [];
-        foreach ($data as $authorization) {
+        foreach ($data as $code) {
+            $authorization = [$code];
             array_unshift($authorization, 'nextval(\'authorizations_id_seq\')', $idApplication);
             $values[] = '('.implode(',', $authorization).')';
         }
 
-        $this->execute('INSERT INTO authorizations (id, application_id, code, title) VALUES '.implode(',', $values));
+        $this->execute('INSERT INTO authorizations (id, application_id, code) VALUES '.implode(',', $values));
     }
 
     /**

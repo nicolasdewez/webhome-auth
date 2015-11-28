@@ -28,7 +28,7 @@ class Initialization extends AbstractMigration
         $this->execute('CREATE TABLE group_authorization (group_id INT NOT NULL, authorization_id INT NOT NULL, PRIMARY KEY(group_id, authorization_id));');
         $this->execute('CREATE INDEX IDX_258445ADFE54D947 ON group_authorization (group_id);');
         $this->execute('CREATE INDEX IDX_258445AD2F8B0EB2 ON group_authorization (authorization_id);');
-        $this->execute('CREATE TABLE authorizations (id INT NOT NULL, application_id INT DEFAULT NULL, code VARCHAR(255) NOT NULL, title VARCHAR(255) NOT NULL, PRIMARY KEY(id));');
+        $this->execute('CREATE TABLE authorizations (id INT NOT NULL, application_id INT DEFAULT NULL, code VARCHAR(255) NOT NULL, PRIMARY KEY(id));');
         $this->execute('CREATE INDEX IDX_2BC15D693E030ACD ON authorizations (application_id);');
         $this->execute('CREATE TABLE applications (id INT NOT NULL, code VARCHAR(5) NOT NULL, title VARCHAR(255) NOT NULL, PRIMARY KEY(id));');
         $this->execute('CREATE TABLE refresh_token (id INT NOT NULL, client_id INT NOT NULL, user_id INT DEFAULT NULL, token VARCHAR(255) NOT NULL, expires_at INT DEFAULT NULL, scope VARCHAR(255) DEFAULT NULL, PRIMARY KEY(id));');
@@ -46,6 +46,8 @@ class Initialization extends AbstractMigration
         $this->execute('CREATE TABLE client (id INT NOT NULL, random_id VARCHAR(255) NOT NULL, redirect_uris TEXT NOT NULL, secret VARCHAR(255) NOT NULL, allowed_grant_types TEXT NOT NULL, name VARCHAR(255) NOT NULL, PRIMARY KEY(id));');
         $this->execute('COMMENT ON COLUMN client.redirect_uris IS \'(DC2Type:array)\';');
         $this->execute('COMMENT ON COLUMN client.allowed_grant_types IS \'(DC2Type:array)\';');
+        $this->execute('CREATE SEQUENCE forgotten_password_id_seq INCREMENT BY 1 MINVALUE 1 START 1;');
+        $this->execute('CREATE TABLE forgotten_password (id INT NOT NULL, username VARCHAR(30) NOT NULL, first_name VARCHAR(255) NOT NULL, last_name VARCHAR(255) NOT NULL, email VARCHAR(255) DEFAULT NULL, PRIMARY KEY(id));');
         $this->execute('ALTER TABLE users ADD CONSTRAINT FK_1483A5E9FE54D947 FOREIGN KEY (group_id) REFERENCES groups (id) NOT DEFERRABLE INITIALLY IMMEDIATE;');
         $this->execute('ALTER TABLE group_authorization ADD CONSTRAINT FK_258445ADFE54D947 FOREIGN KEY (group_id) REFERENCES groups (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;');
         $this->execute('ALTER TABLE group_authorization ADD CONSTRAINT FK_258445AD2F8B0EB2 FOREIGN KEY (authorization_id) REFERENCES authorizations (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;');

@@ -22,7 +22,7 @@ class BuilderMenuItems implements BuilderMenuItemsInterface
 
         $item = new MenuItem();
         $item
-            ->setTitle('menu.auth.home')
+            ->setTitle('menu.home')
             ->setRoute('app_home');
 
         $items[] = $item;
@@ -30,7 +30,7 @@ class BuilderMenuItems implements BuilderMenuItemsInterface
         if ($this->isGranted('AUTH_GRPS', $authorizations)) {
             $item = new MenuItem();
             $item
-                ->setTitle('menu.auth.groups')
+                ->setTitle('menu.groups')
                 ->setRoute('app_groups_list');
 
             $items[] = $item;
@@ -39,8 +39,17 @@ class BuilderMenuItems implements BuilderMenuItemsInterface
         if ($this->isGranted('AUTH_USERS', $authorizations)) {
             $item = new MenuItem();
             $item
-                ->setTitle('menu.auth.users')
+                ->setTitle('menu.users')
                 ->setRoute('app_users_list');
+
+            $items[] = $item;
+        }
+
+        if ($this->isGranted('AUTH_FOPWD', $authorizations)) {
+            $item = new MenuItem();
+            $item
+                ->setTitle('menu.forgotten_password')
+                ->setRoute('app_forgotten_password_list');
 
             $items[] = $item;
         }

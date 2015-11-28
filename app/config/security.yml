@@ -39,6 +39,7 @@ security:
 
     access_control:
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/forgotten-password, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/oauth/v2/auth, roles: IS_AUTHENTICATED_REMEMBERED }
         - { path: ^/oauth/v2/token, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api, roles: [ IS_AUTHENTICATED_ANONYMOUSLY ] }

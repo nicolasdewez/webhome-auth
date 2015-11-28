@@ -1,3 +1,9 @@
+menu:
+    home: Accueil
+    groups: Groupes
+    users: Utilisateurs
+    forgotten_password: Mdp oubliés
+
 User account is disabled.: Compte utilisateur désactivé
 
 locales:
@@ -5,7 +11,7 @@ locales:
     en: English
 
 table:
-    no-element: Aucun élément
+    no_element: Aucun élément
 
 actions:
     label: Actions
@@ -23,13 +29,29 @@ login:
         password: Mot de passe
         remember: Se souvenir de moi
         submit: Se connecter
+    link:
+        forgotten_password: Mot de passe perdu
 
 home:
     title:
         home: Accueil
-        change-password: Changer mon mot de passe
-        forgotten-password: Mot de passe oublié
-        show-my-account: Mon compte
+        change_password: Changer mon mot de passe
+        forgotten_password: Mot de passe oublié
+        show_my_account: Mon compte
+
+    label:
+        forgotten_password:
+            username: Nom d'utilisateur
+            first_name: Prénom
+            last_name: Nom
+            email: Email
+
+    message:
+        forgotten_password:
+            add: Votre mot de passe devrait être initialisé dans quelques instants.
+
+        show_account:
+            edit: Votre compte a été modifié.
 
 users:
     title:
@@ -107,3 +129,26 @@ change_password:
 
     message:
         changed: Mot de passe modifié. Vous pouvez l'utiliser dès maintenant.
+
+forgotten_passwords:
+    title:
+        list: Liste des demandes de réinitialisation de mot de passe
+
+    label:
+        username: Nom d'utilisateur
+        first_name: Prénom
+        last_name: Nom
+        email: Email
+
+    message:
+        delete: Demande supprimée. Vous pouvez prévenir l'utilisateur.
+
+show_account:
+    label:
+       username: Nom d'utilisateur
+       group: Groupe
+       first_name: Prénom
+       last_name: Nom
+       birth_date: Date de naissance
+       email: Email
+       locale: Langue

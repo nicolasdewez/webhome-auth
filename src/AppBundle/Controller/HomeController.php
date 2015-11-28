@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\ForgottenPassword;
 use AppBundle\Model\ChangePassword;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -15,14 +16,12 @@ use Symfony\Component\HttpFoundation\Response;
 class HomeController extends Controller
 {
     /**
-     * @param Request $request
-     *
      * @return Response
      *
-     * @Route("/", name="app_home", methods={"GET"})
-     * @Route("/home", name="app_home_complete", methods={"GET"})
+     * @Route("/", name="app_home", methods="GET")
+     * @Route("/home", name="app_home_complete", methods="GET")
      */
-    public function indexAction(Request $request)
+    public function indexAction()
     {
         return $this->render('home/index.html.twig');
     }
@@ -57,16 +56,39 @@ class HomeController extends Controller
      */
     public function forgottenPasswordAction(Request $request)
     {
-        return $this->render('home/forgottenPassword.html.twig');
+        $forgottenPassword = new ForgottenPassword();
+        $form = $this->createForm('app_forgotten_password', $forgottenPassword);
+
+        if ($form->handleRequest($request) && $form->isValid()) {
+            $manager = $this->get('doctrine.orm.entity_manager');
+            $manager->persist($forgottenPassword);
+            $manager->flush();
+
+            $this->get('session')->getFlashBag()->add('notice', $this->get('translator')->trans('home.message.forgotten_password.add'));
+
+            return new RedirectResponse($this->generateUrl('login'));
+        }
+
+        return $this->render('home/forgottenPassword.html.twig', ['form' => $form->createView()]);
     }
 
     /**
+     * @param Request $request
+     *
      * @return array
      *
-     * @Route("/show-account", name="app_home_show_my_account", methods={"GET"})
+     * @Route("/show-account", name="app_home_show_my_account", methods={"GET", "POST"})
      */
-    public function showMyAccountAction()
+    public function showMyAccountAction(Request $request)
     {
-        return $this->render('home/showMyAccount.html.twig');
+        $form = $this->createForm('app_account', $this->getUser(), ['validation_groups' => 'Account']);
+        if ($form->handleRequest($request) && $form->isValid()) {
+            $this->get('doctrine.orm.entity_manager')->flush();
+            $this->get('session')->getFlashBag()->add('notice', $this->get('translator')->trans('home.message.show_account.edit'));
+
+            return new RedirectResponse($this->generateUrl('app_home_show_my_account'));
+        }
+
+        return $this->render('home/showMyAccount.html.twig', ['form' => $form->createView()]);
     }
 }

@@ -1,3 +1,9 @@
+menu:
+    home: Home
+    groups: Groups
+    users: Users
+    forgotten_password: Forgotten passwords
+
 User account is disabled.: User account is disabled
 
 locales:
@@ -5,7 +11,7 @@ locales:
     en: English
 
 table:
-    no-element: There are no element
+    no_element: There are no element
 
 actions:
     label: Actions
@@ -23,13 +29,29 @@ login:
         password: Password
         remember: Remember me
         submit: Sign in
+    link:
+        forgotten_password: Forgotten password
 
 home:
     title:
         home: Home
-        change-password: Change my password
-        forgotten-password: Forgotten password
-        show-my-account: My account
+        change_password: Change my password
+        forgotten_password: Forgotten password
+        show_my_account: My account
+
+    label:
+        forgotten_password:
+            username: Username
+            first_name: First name
+            last_name: Last name
+            email: Email
+
+    message:
+        forgotten_password:
+            add: Your password should be initialized in few moments.
+
+        show_account:
+            edit: Your account has been edited
 
 users:
     title:
@@ -107,3 +129,26 @@ change_password:
 
     message:
         changed: Password changed. You can use immediatly.
+
+forgotten_passwords:
+    title:
+        list: List of forgotten passwords
+
+    label:
+        username: Username
+        first_name: First name
+        last_name: Last name
+        email: Email
+
+    message:
+        delete: Forgotten password deleted. You can answer to user.
+
+show_account:
+    label:
+       username: Username
+       group: Group
+       first_name: First name
+       last_name: Last name
+       birth_date: Birth date
+       email: Email
+       locale: Locale
