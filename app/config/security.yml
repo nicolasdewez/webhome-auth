@@ -15,11 +15,10 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js|fonts)/
             security: false
 
-#        api:
-#            pattern:    ^/api
-#            fos_oauth:  true
-#            stateless:  true
-#            anonymous:  false
+        api:
+            pattern:    ^/api
+            stateless:  true
+            anonymous:  true
 
         oauth_authorize:
             pattern:   ^/

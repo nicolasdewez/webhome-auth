@@ -1978,12 +1978,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/nicolasdewez/webhome-auth-api.git",
-                "reference": "95eda2d9215146e0122da67c7b19760e9d7a92f1"
+                "reference": "416b98f9a4e524c7c6f30fb334a45e70537e3cab"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nicolasdewez/webhome-auth-api/zipball/95eda2d9215146e0122da67c7b19760e9d7a92f1",
-                "reference": "95eda2d9215146e0122da67c7b19760e9d7a92f1",
+                "url": "https://api.github.com/repos/nicolasdewez/webhome-auth-api/zipball/416b98f9a4e524c7c6f30fb334a45e70537e3cab",
+                "reference": "416b98f9a4e524c7c6f30fb334a45e70537e3cab",
                 "shasum": ""
             },
             "require": {
@@ -2009,7 +2009,7 @@
                 "MIT"
             ],
             "description": "WebHome Project - Auth Api",
-            "time": "2015-10-08 11:36:06"
+            "time": "2015-11-29 17:26:31"
         },
         {
             "name": "nicolasdewez/webhome-common",

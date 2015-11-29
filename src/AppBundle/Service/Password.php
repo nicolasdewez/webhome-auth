@@ -12,6 +12,8 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
  */
 class Password
 {
+    const LENGTH = 8;
+
     /** @var EntityManagerInterface */
     private $manager;
 
@@ -58,5 +60,29 @@ class Password
         $user->setPassword($password);
         $this->encodePassword($user);
         $this->manager->flush();
+    }
+
+    /**
+     * @return string
+     */
+    public function generatePassword()
+    {
+        $data = [
+            range('A', 'Z'),
+            range('a', 'z'),
+            ['.', '?', ';', ',', '/', '!', '+', '%', '*'],
+            range(0, 9),
+        ];
+
+        $nbTypes = count($data);
+        $password = '';
+        for ($i = 1; $i <= self::LENGTH; $i++) {
+            $indexType = rand(0, $nbTypes-1);
+            $nbElements = count($data[$indexType]);
+            $indexElement = rand(0, $nbElements-1);
+            $password .= $data[$indexType][$indexElement];
+        }
+
+        return $password;
     }
 }
