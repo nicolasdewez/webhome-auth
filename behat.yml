@@ -1,8 +1,0 @@
-default:
-    paths:
-        features:  features
-    extensions:
-        Behat\Symfony2Extension\Extension: ~
-        Ndewez\BehatSfToolkit\Extension\WebdriverExtension:
-            webdriver_url:  'http://selenium:4444/wd/hub'
-            base_url:  'http://app.docker/app_dev.php'

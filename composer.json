@@ -29,8 +29,6 @@
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3",
-        "behat/behat": "~2.0",
-        "behat/symfony2-extension": "^1.1",
         "phpunit/phpunit": "^4.8",
         "nelmio/api-doc-bundle": "^2.9"
     },
