@@ -2017,12 +2017,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/nicolasdewez/webhome-common.git",
-                "reference": "05b1c0c49a150a45a5d9d9be018635c2bb38cb44"
+                "reference": "e6cfcde89e18e27c1a5cf7fe78bbf5a5c414844b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nicolasdewez/webhome-common/zipball/05b1c0c49a150a45a5d9d9be018635c2bb38cb44",
-                "reference": "05b1c0c49a150a45a5d9d9be018635c2bb38cb44",
+                "url": "https://api.github.com/repos/nicolasdewez/webhome-common/zipball/e6cfcde89e18e27c1a5cf7fe78bbf5a5c414844b",
+                "reference": "e6cfcde89e18e27c1a5cf7fe78bbf5a5c414844b",
                 "shasum": ""
             },
             "require": {
@@ -2043,7 +2043,7 @@
                 "MIT"
             ],
             "description": "WebHome Project - Common",
-            "time": "2015-11-28 18:29:54"
+            "time": "2015-11-30 13:06:48"
         },
         {
             "name": "phpcollection/phpcollection",
@@ -3511,16 +3511,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "4.8.18",
+            "version": "4.8.19",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "fa33d4ad96481b91df343d83e8c8aabed6b1dfd3"
+                "reference": "b2caaf8947aba5e002d42126723e9d69795f32b4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/fa33d4ad96481b91df343d83e8c8aabed6b1dfd3",
-                "reference": "fa33d4ad96481b91df343d83e8c8aabed6b1dfd3",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/b2caaf8947aba5e002d42126723e9d69795f32b4",
+                "reference": "b2caaf8947aba5e002d42126723e9d69795f32b4",
                 "shasum": ""
             },
             "require": {
@@ -3579,7 +3579,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2015-11-11 11:32:49"
+            "time": "2015-11-30 08:18:59"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
