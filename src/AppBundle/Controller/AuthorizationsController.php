@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Group;
+use AppBundle\Form\Type\AuthorizationGrantedCollectionType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -34,7 +35,7 @@ class AuthorizationsController extends Controller
     {
         $authorizationService = $this->get('app.authorization');
         $authorizationGroup = $authorizationService->buildAuthorizationGroup($group);
-        $form = $this->createForm('app_authorization_granted_collection', $authorizationGroup, ['disabled' => !$this->isGroupEditable($group)]);
+        $form = $this->createForm(AuthorizationGrantedCollectionType::class, $authorizationGroup, ['disabled' => !$this->isGroupEditable($group)]);
         if ($form->handleRequest($request) && $form->isValid()) {
             $authorizationService->saveAuthorizationGroup($group, $authorizationGroup);
 

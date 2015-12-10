@@ -2,7 +2,10 @@
 
 namespace AppBundle\Form\Type;
 
+use AppBundle\Form\Type\AuthorizationGrantedType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -17,11 +20,11 @@ class AuthorizationGrantedCollectionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('authorizations', 'collection', ['type' => 'app_authorization_granted'])
+            ->add('authorizations', CollectionType::class, ['entry_type' => AuthorizationGrantedType::class])
         ;
 
         if (!$options['disabled']) {
-            $builder->add('submit', 'submit', ['label' => 'actions.submit', 'attr' => ['class' => 'btn btn-primary']]);
+            $builder->add('submit', SubmitType::class, ['label' => 'actions.submit', 'attr' => ['class' => 'btn btn-primary']]);
         }
     }
 
@@ -34,13 +37,5 @@ class AuthorizationGrantedCollectionType extends AbstractType
             'data_class' => 'AppBundle\\Model\\AuthorizationGroup',
             'disabled' => false,
         ]);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getName()
-    {
-        return 'app_authorization_granted_collection';
     }
 }

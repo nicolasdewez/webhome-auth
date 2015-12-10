@@ -4,6 +4,9 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\ForgottenPassword;
 use AppBundle\Model\ChangePassword;
+use AppBundle\Form\Type\AccountType;
+use AppBundle\Form\Type\ChangePasswordType;
+use AppBundle\Form\Type\ForgottenPasswordType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,7 +39,7 @@ class HomeController extends Controller
     public function changePasswordAction(Request $request)
     {
         $changePassword = new ChangePassword($this->getUser());
-        $form = $this->createForm('app_change_password', $changePassword);
+        $form = $this->createForm(ChangePasswordType::class, $changePassword);
         if ($form->handleRequest($request) && $form->isValid()) {
             $this->get('app.password')->changePassword($this->getUser(), $changePassword->getPassword());
             $this->get('session')->getFlashBag()->add('notice', $this->get('translator')->trans('change_password.message.changed'));
@@ -57,7 +60,7 @@ class HomeController extends Controller
     public function forgottenPasswordAction(Request $request)
     {
         $forgottenPassword = new ForgottenPassword();
-        $form = $this->createForm('app_forgotten_password', $forgottenPassword);
+        $form = $this->createForm(ForgottenPasswordType::class, $forgottenPassword);
 
         if ($form->handleRequest($request) && $form->isValid()) {
             $manager = $this->get('doctrine.orm.entity_manager');
@@ -81,7 +84,7 @@ class HomeController extends Controller
      */
     public function showMyAccountAction(Request $request)
     {
-        $form = $this->createForm('app_account', $this->getUser(), ['validation_groups' => 'Account']);
+        $form = $this->createForm(AccountType::class, $this->getUser(), ['validation_groups' => 'Account']);
         if ($form->handleRequest($request) && $form->isValid()) {
             $this->get('doctrine.orm.entity_manager')->flush();
             $this->get('session')->getFlashBag()->add('notice', $this->get('translator')->trans('home.message.show_account.edit'));

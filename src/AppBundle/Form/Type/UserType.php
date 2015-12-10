@@ -3,7 +3,13 @@
 namespace AppBundle\Form\Type;
 
 use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -21,11 +27,11 @@ class UserType extends AbstractType
         $builder
             ->add('firstName', null, ['label' => 'users.label.first_name'])
             ->add('lastName', null, ['label' => 'users.label.last_name'])
-            ->add('birthDate', 'birthday', ['label' => 'users.label.birth_date', 'required' => false])
-            ->add('email', 'email', ['label' => 'users.label.email', 'required' => false])
-            ->add('locale', 'choice', ['choices' => ['fr' => 'locales.fr', 'en' => 'locales.en'], 'label' => 'users.label.locale'])
+            ->add('birthDate', BirthdayType::class, ['label' => 'users.label.birth_date', 'required' => false])
+            ->add('email', EmailType::class, ['label' => 'users.label.email', 'required' => false])
+            ->add('locale', ChoiceType::class, ['choices' => ['fr' => 'locales.fr', 'en' => 'locales.en'], 'label' => 'users.label.locale'])
             ->add('username', null, ['label' => 'users.label.username'])
-            ->add('group', 'entity', [
+            ->add('group', EntityType::class, [
                 'class' => 'AppBundle:Group',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('g')
@@ -37,7 +43,7 @@ class UserType extends AbstractType
         ;
 
         if (!$options['disabled']) {
-            $builder->add('password', 'repeated', [
+            $builder->add('password', RepeatedType::class, [
                 'label' => 'users.label.password',
                 'type' => 'password',
                 'required' => false,
@@ -54,11 +60,11 @@ class UserType extends AbstractType
         $builder->add('active', null, ['required' => false, 'label' => 'users.label.active', 'attr' => ['disabled' => $disabled]]);
 
         if ($options['submit']) {
-            $builder->add('submit', 'submit', ['label' => 'actions.submit', 'attr' => ['class' => 'btn btn-primary']]);
+            $builder->add('submit', SubmitType::class, ['label' => 'actions.submit', 'attr' => ['class' => 'btn btn-primary']]);
         }
 
         if ($options['delete']) {
-            $builder->add('delete', 'submit', ['label' => 'actions.delete', 'attr' => ['class' => 'btn btn-danger']]);
+            $builder->add('delete', SubmitType::class, ['label' => 'actions.delete', 'attr' => ['class' => 'btn btn-danger']]);
         }
     }
 
@@ -84,13 +90,5 @@ class UserType extends AbstractType
 
             return false;
         });
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getName()
-    {
-        return 'app_user';
     }
 }

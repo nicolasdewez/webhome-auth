@@ -8,6 +8,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 /**
  * Class ResetPasswordCommand.
@@ -32,6 +33,7 @@ class ResetPasswordCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $io = new SymfonyStyle($input, $output);
         $username = $input->getArgument('username');
         $manager = $this->getContainer()->get('doctrine.orm.entity_manager');
         $user = $manager->getRepository('AppBundle:User')->findOneBy(['username' => $username]);
@@ -52,8 +54,9 @@ class ResetPasswordCommand extends ContainerAwareCommand
         $password = $passwordService->generatePassword();
         $passwordService->changePassword($user, $password);
 
-        $output->writeln(sprintf('<info>Username : %s</info>', $username));
-        $output->writeln(sprintf('<info>Password: %s</info>', $password));
-        $output->writeln(sprintf('<info>Group: %s (%s)</info>', $user->getGroup()->getTitle(), $user->getGroup()->getCode()));
+        $io->success('User edited');
+        $io->text(sprintf('Username : %s', $username));
+        $io->text(sprintf('Password: %s', $password));
+        $io->text(sprintf('Group: %s (%s)', $user->getGroup()->getTitle(), $user->getGroup()->getCode()));
     }
 }

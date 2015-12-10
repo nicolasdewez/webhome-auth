@@ -2,6 +2,7 @@
 
 namespace OAuthBundle\Controller;
 
+use OAuthBundle\Form\Type\LoginType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,7 +24,7 @@ class OAuthController extends Controller
      */
     public function loginAction(Request $request)
     {
-        $form = $this->get('form.factory')->createNamed('', 'login', null, [
+        $form = $this->get('form.factory')->createNamed('', LoginType::class, null, [
             'action' => $this->generateUrl('login_check'),
         ]);
 

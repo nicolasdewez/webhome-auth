@@ -7,6 +7,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 /**
  * Class CreateClientCommand.
@@ -44,6 +45,7 @@ class CreateClientCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $io = new SymfonyStyle($input, $output);
         $clientManager = $this->getContainer()->get('fos_oauth_server.client_manager.default');
 
         $client = $clientManager->createClient();
@@ -53,9 +55,9 @@ class CreateClientCommand extends ContainerAwareCommand
 
         $clientManager->updateClient($client);
 
-        $output->writeln(
+        $io->success(
             sprintf(
-                'Added a new client <info>%s</info> with public id <info>%s</info> and secret <info>%s</info>',
+                'Added a new client %s with public id %s and secret %s',
                 $client->getName(),
                 $client->getPublicId(),
                 $client->getSecret()

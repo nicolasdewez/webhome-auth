@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Group;
 use AppBundle\Entity\User;
+use AppBundle\Form\Type\UserType;
 use Ndewez\WebHome\CommonBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -61,7 +62,7 @@ class UsersController extends AbstractController
     public function editAction(User $user, Request $request)
     {
         $originalPassword = $user->getPassword();
-        $form = $this->get('form.factory')->create('app_user', $user, ['delete' => $this->isUserDeletable($user), 'activate' => $this->isUserActivate($user)]);
+        $form = $this->get('form.factory')->create(UserType::class, $user, ['delete' => $this->isUserDeletable($user), 'activate' => $this->isUserActivate($user)]);
 
         if ($form->handleRequest($request) && $form->isValid()) {
             $manager = $this->get('doctrine.orm.entity_manager');
@@ -94,7 +95,7 @@ class UsersController extends AbstractController
      */
     public function showAction(User $user)
     {
-        $form = $this->get('form.factory')->create('app_user', $user, ['submit' => false]);
+        $form = $this->get('form.factory')->create(UserType::class, $user, ['submit' => false]);
 
         return $this->render('users/show.html.twig', ['form' => $form->createView()]);
     }
@@ -116,7 +117,7 @@ class UsersController extends AbstractController
             $user->setGroup($group);
         }
 
-        $form = $this->get('form.factory')->create('app_user', $user, ['validation_groups' => 'Add']);
+        $form = $this->get('form.factory')->create(UserType::class, $user, ['validation_groups' => 'Add']);
 
         if ($form->handleRequest($request) && $form->isValid()) {
             $this->get('app.password')->encodePassword($user);

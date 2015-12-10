@@ -3,6 +3,10 @@
 namespace AppBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -19,10 +23,10 @@ class AccountType extends AbstractType
         $builder
             ->add('firstName', null, ['label' => 'users.label.first_name'])
             ->add('lastName', null, ['label' => 'users.label.last_name'])
-            ->add('birthDate', 'birthday', ['label' => 'users.label.birth_date', 'required' => false])
-            ->add('email', 'email', ['label' => 'users.label.email', 'required' => false])
-            ->add('locale', 'choice', ['choices' => ['fr' => 'locales.fr', 'en' => 'locales.en'], 'label' => 'users.label.locale'])
-            ->add('submit', 'submit', ['label' => 'actions.submit', 'attr' => ['class' => 'btn btn-primary']])
+            ->add('birthDate', BirthdayType::class, ['label' => 'users.label.birth_date', 'required' => false])
+            ->add('email', EmailType::class, ['label' => 'users.label.email', 'required' => false])
+            ->add('locale', ChoiceType::class, ['choices' => ['fr' => 'locales.fr', 'en' => 'locales.en'], 'label' => 'users.label.locale'])
+            ->add('submit', SubmitType::class, ['label' => 'actions.submit', 'attr' => ['class' => 'btn btn-primary']])
         ;
     }
 
@@ -34,13 +38,5 @@ class AccountType extends AbstractType
         $resolver->setDefaults([
             'data_class' => 'AppBundle\\Entity\\User',
         ]);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getName()
-    {
-        return 'app_account';
     }
 }

@@ -5,36 +5,36 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
         <service id="app.form.type.login" class="OAuthBundle\Form\Type\LoginType">
-            <tag name="form.type" alias="login" />
+            <tag name="form.type" />
         </service>
 
         <service id="app.form.type.group" class="AppBundle\Form\Type\GroupType">
-            <tag name="form.type" alias="app_group" />
+            <tag name="form.type" />
         </service>
 
         <service id="app.form.type.user" class="AppBundle\Form\Type\UserType">
-            <tag name="form.type" alias="app_user" />
+            <tag name="form.type" />
         </service>
 
         <service id="app.form.type.authorization_granted" class="AppBundle\Form\Type\AuthorizationGrantedType">
             <argument type="service" id="doctrine.orm.entity_manager"/>
-            <tag name="form.type" alias="app_authorization_granted" />
+            <tag name="form.type" />
         </service>
 
         <service id="app.form.type.authorization_group_collection" class="AppBundle\Form\Type\AuthorizationGrantedCollectionType">
-            <tag name="form.type" alias="app_authorization_granted_collection" />
+            <tag name="form.type" />
         </service>
 
         <service id="app.form.type.change_password" class="AppBundle\Form\Type\ChangePasswordType">
-            <tag name="form.type" alias="app_change_password" />
+            <tag name="form.type" />
         </service>
 
         <service id="app.form.type.forgotten_password" class="AppBundle\Form\Type\ForgottenPasswordType">
-            <tag name="form.type" alias="app_forgotten_password" />
+            <tag name="form.type" />
         </service>
 
         <service id="app.form.type.account" class="AppBundle\Form\Type\AccountType">
-            <tag name="form.type" alias="app_account" />
+            <tag name="form.type" />
         </service>
 
         <service id="app.validator.constraints.check_current_password" class="AppBundle\Validator\Constraints\CheckCurrentPasswordValidator">

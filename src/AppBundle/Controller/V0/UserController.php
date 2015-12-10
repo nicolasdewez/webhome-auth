@@ -2,8 +2,8 @@
 
 namespace AppBundle\Controller\V0;
 
-use FOS\RestBundle\Controller\Annotations\Get;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -11,6 +11,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class UserController.
+ *
+ * @Route("/users")
  */
 class UserController extends Controller
 {
@@ -27,7 +29,7 @@ class UserController extends Controller
      *  description = "Get user information"
      * )
      *
-     * @Get("/users/{username}", name="api_user_information")
+     * @Route("/users/{username}", name="api_user_information", methods="GET")
      */
     public function getInformationAction($username, Request $request)
     {
@@ -61,7 +63,7 @@ class UserController extends Controller
      *  description = "Check if user is granted"
      * )
      *
-     * @Get("/users/{username}/granted/{codeAction}", name="api_user_granted")
+     * @Route("/{username}/granted/{codeAction}", name="api_user_granted", methods="GET")
      */
     public function isGrantedAction($username, $codeAction)
     {
@@ -94,7 +96,7 @@ class UserController extends Controller
      *  description = "Check if user is granted for application"
      * )
      *
-     * @Get("/users/{username}/application/{codeApplication}", name="api_user_application_granted")
+     * @Route("/{username}/application/{codeApplication}", name="api_user_application_granted", methods="GET")
      */
     public function isApplicationGrantedAction($username, $codeApplication)
     {

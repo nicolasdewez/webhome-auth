@@ -3,6 +3,7 @@
 namespace AppBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -28,11 +29,11 @@ class GroupType extends AbstractType
             ->add('active', null, ['required' => false, 'label' => 'groups.label.active', 'attr' => ['disabled' => $disabled]]);
 
         if ($options['submit']) {
-            $builder->add('submit', 'submit', ['label' => 'actions.submit', 'attr' => ['class' => 'btn btn-primary']]);
+            $builder->add('submit', SubmitType::class, ['label' => 'actions.submit', 'attr' => ['class' => 'btn btn-primary']]);
         }
 
         if ($options['delete']) {
-            $builder->add('delete', 'submit', ['label' => 'actions.delete', 'validation_groups' => false, 'attr' => ['class' => 'btn btn-danger']]);
+            $builder->add('delete', SubmitType::class, ['label' => 'actions.delete', 'validation_groups' => false, 'attr' => ['class' => 'btn btn-danger']]);
         }
     }
 
@@ -57,13 +58,5 @@ class GroupType extends AbstractType
 
             return false;
         });
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getName()
-    {
-        return 'app_group';
     }
 }

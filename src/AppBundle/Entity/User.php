@@ -396,6 +396,7 @@ class User implements AdvancedUserInterface, \Serializable
         return serialize(
             [
                 $this->id,
+                $this->username,
             ]
         );
     }
@@ -405,7 +406,7 @@ class User implements AdvancedUserInterface, \Serializable
      */
     public function unserialize($serialized)
     {
-        list($this->id) = unserialize($serialized);
+        list($this->id, $this->username) = unserialize($serialized);
     }
 
     /**

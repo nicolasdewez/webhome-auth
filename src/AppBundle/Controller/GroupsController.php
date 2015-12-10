@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Group;
+use AppBundle\Form\Type\GroupType;
 use Ndewez\WebHome\CommonBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -44,7 +45,7 @@ class GroupsController extends AbstractController
      */
     public function editAction(Group $group, Request $request)
     {
-        $form = $this->get('form.factory')->create('app_group', $group, ['delete' => $this->isGroupDeletable($group), 'activate' => $this->isGroupActivate($group)]);
+        $form = $this->get('form.factory')->create(GroupType::class, $group, ['delete' => $this->isGroupDeletable($group), 'activate' => $this->isGroupActivate($group)]);
 
         if ($form->handleRequest($request) && $form->isValid()) {
             $manager = $this->get('doctrine.orm.entity_manager');
@@ -82,7 +83,7 @@ class GroupsController extends AbstractController
      */
     public function showAction(Group $group)
     {
-        $form = $this->get('form.factory')->create('app_group', $group, ['submit' => false]);
+        $form = $this->get('form.factory')->create(GroupType::class, $group, ['submit' => false]);
 
         return $this->render('groups/show.html.twig', ['form' => $form->createView()]);
     }
@@ -98,7 +99,7 @@ class GroupsController extends AbstractController
     public function addAction(Request $request)
     {
         $group = new Group();
-        $form = $this->get('form.factory')->create('app_group', $group);
+        $form = $this->get('form.factory')->create(GroupType::class, $group);
 
         if ($form->handleRequest($request) && $form->isValid()) {
             $manager = $this->get('doctrine.orm.entity_manager');

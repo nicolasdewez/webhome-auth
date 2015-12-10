@@ -5,6 +5,8 @@ namespace AppBundle\Form\Type;
 use AppBundle\Form\DataTransformer\AuthorizationTransformer;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -30,8 +32,8 @@ class AuthorizationGrantedType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('authorization', 'hidden')
-            ->add('granted', 'checkbox', ['required' => false])
+            ->add('authorization', HiddenType::class)
+            ->add('granted', CheckboxType::class, ['required' => false])
         ;
 
         $builder->get('authorization')
@@ -46,13 +48,5 @@ class AuthorizationGrantedType extends AbstractType
         $resolver->setDefaults([
             'data_class' => 'AppBundle\\Model\\AuthorizationGranted',
         ]);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getName()
-    {
-        return 'app_authorization_granted';
     }
 }
