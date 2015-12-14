@@ -24,17 +24,6 @@ class Data extends AbstractMigration
 
         $this->execute('INSERT INTO groups (id, active, code, title) VALUES '.implode(',', $values));
 
-        // Groups <-> Authorizations
-        $this->execute('INSERT INTO group_authorization (group_id, authorization_id)
-                        SELECT g.id, a.id
-                        FROM authorizations a
-                        JOIN groups g ON g.code = \'ADM_SUPER\'');
-
-        $this->execute('INSERT INTO group_authorization (group_id, authorization_id)
-                        SELECT g.id, a.id
-                        FROM authorizations a
-                        JOIN groups g ON g.code = \'ADM\'');
-
         // Users
         $idGroup = $this->getGroupId('ADM_SUPER', 'Super Administrator');
 

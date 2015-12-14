@@ -30,7 +30,7 @@ class Initialization extends AbstractMigration
         $this->execute('CREATE INDEX IDX_258445AD2F8B0EB2 ON group_authorization (authorization_id);');
         $this->execute('CREATE TABLE authorizations (id INT NOT NULL, application_id INT DEFAULT NULL, code VARCHAR(255) NOT NULL, PRIMARY KEY(id));');
         $this->execute('CREATE INDEX IDX_2BC15D693E030ACD ON authorizations (application_id);');
-        $this->execute('CREATE TABLE applications (id INT NOT NULL, code VARCHAR(5) NOT NULL, title VARCHAR(255) NOT NULL, PRIMARY KEY(id));');
+        $this->execute('CREATE TABLE applications (id INT NOT NULL, code VARCHAR(5) NOT NULL, title VARCHAR(255) NOT NULL, href VARCHAR(255) NOT NULL, PRIMARY KEY(id));');
         $this->execute('CREATE TABLE refresh_token (id INT NOT NULL, client_id INT NOT NULL, user_id INT DEFAULT NULL, token VARCHAR(255) NOT NULL, expires_at INT DEFAULT NULL, scope VARCHAR(255) DEFAULT NULL, PRIMARY KEY(id));');
         $this->execute('CREATE UNIQUE INDEX UNIQ_C74F21955F37A13B ON refresh_token (token);');
         $this->execute('CREATE INDEX IDX_C74F219519EB6921 ON refresh_token (client_id);');
@@ -58,5 +58,12 @@ class Initialization extends AbstractMigration
         $this->execute('ALTER TABLE access_token ADD CONSTRAINT FK_B6A2DD68A76ED395 FOREIGN KEY (user_id) REFERENCES users (id) NOT DEFERRABLE INITIALLY IMMEDIATE;');
         $this->execute('ALTER TABLE auth_code ADD CONSTRAINT FK_5933D02C19EB6921 FOREIGN KEY (client_id) REFERENCES client (id) NOT DEFERRABLE INITIALLY IMMEDIATE;');
         $this->execute('ALTER TABLE auth_code ADD CONSTRAINT FK_5933D02CA76ED395 FOREIGN KEY (user_id) REFERENCES users (id) NOT DEFERRABLE INITIALLY IMMEDIATE;');
+        $this->execute('CREATE TABLE user_client (user_id INT NOT NULL, client_id INT NOT NULL, PRIMARY KEY(user_id, client_id));');
+        $this->execute('CREATE INDEX IDX_A2161F68A76ED395 ON user_client (user_id);');
+        $this->execute('CREATE INDEX IDX_A2161F6819EB6921 ON user_client (client_id);');
+        $this->execute('ALTER TABLE user_client ADD CONSTRAINT FK_A2161F68A76ED395 FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;');
+        $this->execute('ALTER TABLE user_client ADD CONSTRAINT FK_A2161F6819EB6921 FOREIGN KEY (client_id) REFERENCES client (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;');
     }
 }
+
+

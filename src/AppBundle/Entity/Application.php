@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation\Groups;
 
 /**
  * Application.
@@ -26,6 +27,8 @@ class Application
      * @var string
      *
      * @ORM\Column(length=5)
+     *
+     * @Groups("OAuth")
      */
     private $code;
 
@@ -33,8 +36,19 @@ class Application
      * @var string
      *
      * @ORM\Column()
+     *
+     * @Groups("OAuth")
      */
     private $title;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column()
+     *
+     * @Groups("OAuth")
+     */
+    private $href;
 
     /**
      * @var ArrayCollection
@@ -104,6 +118,30 @@ class Application
     public function getTitle()
     {
         return $this->title;
+    }
+
+    /**
+     * Set href.
+     *
+     * @param string $href
+     *
+     * @return Application
+     */
+    public function setHref($href)
+    {
+        $this->href = $href;
+
+        return $this;
+    }
+
+    /**
+     * Get href.
+     *
+     * @return string
+     */
+    public function getHref()
+    {
+        return $this->href;
     }
 
     /**

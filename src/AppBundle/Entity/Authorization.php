@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation\Groups;
 
 /**
  * Authorization.
@@ -28,6 +29,8 @@ class Authorization
      * @var string
      *
      * @ORM\Column()
+     *
+     * @Groups("OAuth")
      */
     private $code;
 
@@ -35,6 +38,8 @@ class Authorization
      * @var Application
      *
      * @ORM\ManyToOne(targetEntity="Application", inversedBy="authorizations", cascade={"persist"})
+     *
+     * @Groups("OAuth")
      */
     private $application;
 

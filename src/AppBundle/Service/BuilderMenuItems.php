@@ -3,8 +3,8 @@
 namespace AppBundle\Service;
 
 use Ndewez\WebHome\CommonBundle\Menu\BuilderMenuItemsInterface;
-use Ndewez\WebHome\AuthApiBundle\V0\Model\Authorization as AuthorizationModel;
-use Ndewez\WebHome\CommonBundle\Model\MenuItem;
+use Ndewez\WebHome\CommonBundle\Model\Authorization as AuthorizationModel;
+use Ndewez\WebHome\CommonBundle\Model\MenuItemLink;
 
 /**
  * Class BuilderMenu.
@@ -20,7 +20,7 @@ class BuilderMenuItems implements BuilderMenuItemsInterface
             return [];
         }
 
-        $item = new MenuItem();
+        $item = new MenuItemLink();
         $item
             ->setTitle('menu.home')
             ->setRoute('app_home');
@@ -28,7 +28,7 @@ class BuilderMenuItems implements BuilderMenuItemsInterface
         $items[] = $item;
 
         if ($this->isGranted('AUTH_GRPS', $authorizations)) {
-            $item = new MenuItem();
+            $item = new MenuItemLink();
             $item
                 ->setTitle('menu.groups')
                 ->setRoute('app_groups_list');
@@ -37,7 +37,7 @@ class BuilderMenuItems implements BuilderMenuItemsInterface
         }
 
         if ($this->isGranted('AUTH_USERS', $authorizations)) {
-            $item = new MenuItem();
+            $item = new MenuItemLink();
             $item
                 ->setTitle('menu.users')
                 ->setRoute('app_users_list');
@@ -46,7 +46,7 @@ class BuilderMenuItems implements BuilderMenuItemsInterface
         }
 
         if ($this->isGranted('AUTH_FOPWD', $authorizations)) {
-            $item = new MenuItem();
+            $item = new MenuItemLink();
             $item
                 ->setTitle('menu.forgotten_password')
                 ->setRoute('app_forgotten_password_list');

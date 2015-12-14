@@ -12,16 +12,13 @@
         "doctrine/orm": "~2.4",
         "doctrine/doctrine-bundle": "~1.4",
         "symfony/assetic-bundle": "~2.3",
-        "symfony/swiftmailer-bundle": "~2.3",
         "symfony/monolog-bundle": "~2.4",
         "sensio/distribution-bundle": "~4.0",
         "sensio/framework-extra-bundle": "~3.0",
         "incenteev/composer-parameter-handler": "~2.0",
         "robmorgan/phinx": "~0.5",
         "jms/serializer-bundle": "~1.0",
-        "doctrine/doctrine-fixtures-bundle": "~2.2",
         "friendsofsymfony/oauth-server-bundle": "~1.4",
-        "nicolasdewez/webhome-auth-api": "dev-master",
         "nicolasdewez/webhome-common": "dev-master"
     },
     "require-dev": {

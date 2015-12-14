@@ -2,6 +2,7 @@
 
 namespace OAuthBundle\Controller;
 
+use JMS\Serializer\SerializationContext;
 use OAuthBundle\Form\Type\LoginType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\FormError;
@@ -57,6 +58,6 @@ class OAuthController extends Controller
      */
     public function getUserAction()
     {
-        return new Response($this->get('jms_serializer')->serialize($this->getUser(), 'json'));
+        return new Response($this->get('jms_serializer')->serialize($this->getUser(), 'json', SerializationContext::create()->setGroups(['OAuth'])));
     }
 }

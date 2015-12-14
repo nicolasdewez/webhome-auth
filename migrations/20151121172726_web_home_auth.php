@@ -2,15 +2,16 @@
 
 use Phinx\Migration\AbstractMigration;
 
-class AuthorizationsAuth extends AbstractMigration
+class WebHomeAuth extends AbstractMigration
 {
     /**
      * {@inheritdoc}
      */
     public function up()
     {
-        $data = ['nextval(\'applications_id_seq\')', '\'AUTH\'',  '\'WebHome Auth\''];
-        $this->execute('INSERT INTO applications (id, code, title) VALUES ('.implode(',', $data).')');
+        // Application
+        $data = ['nextval(\'applications_id_seq\')', '\'AUTH\'',  '\'WebHome Auth\'', '\'http://localhost:8001/app_dev.php/\''];
+        $this->execute('INSERT INTO applications (id, code, title, href) VALUES ('.implode(',', $data).')');
 
         $idApplication = $this->getApplicationId('AUTH', 'WebHome Auth');
         $data = [
@@ -34,6 +35,7 @@ class AuthorizationsAuth extends AbstractMigration
             '\'AUTH_FOPWD_DEL\'',
         ];
 
+        // Authorizations
         $values = [];
         foreach ($data as $code) {
             $authorization = [$code];
@@ -42,6 +44,20 @@ class AuthorizationsAuth extends AbstractMigration
         }
 
         $this->execute('INSERT INTO authorizations (id, application_id, code) VALUES '.implode(',', $values));
+
+
+        // Groups <-> Authorizations
+        $this->execute('INSERT INTO group_authorization (group_id, authorization_id)
+                        SELECT g.id, a.id
+                        FROM authorizations a
+                        JOIN groups g ON g.code = \'ADM_SUPER\'
+                        WHERE a.code LIKE \'AUTH_%\'');
+
+        $this->execute('INSERT INTO group_authorization (group_id, authorization_id)
+                        SELECT g.id, a.id
+                        FROM authorizations a
+                        JOIN groups g ON g.code = \'ADM\'
+                        WHERE a.code LIKE \'AUTH_%\'');
     }
 
     /**

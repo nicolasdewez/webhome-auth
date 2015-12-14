@@ -62,7 +62,10 @@ class UsersController extends AbstractController
     public function editAction(User $user, Request $request)
     {
         $originalPassword = $user->getPassword();
-        $form = $this->get('form.factory')->create(UserType::class, $user, ['delete' => $this->isUserDeletable($user), 'activate' => $this->isUserActivate($user)]);
+        $form = $this->get('form.factory')->create(UserType::class, $user, [
+            'delete' => $this->isUserDeletable($user),
+            'activate' => $this->isUserActivate($user),
+        ]);
 
         if ($form->handleRequest($request) && $form->isValid()) {
             $manager = $this->get('doctrine.orm.entity_manager');

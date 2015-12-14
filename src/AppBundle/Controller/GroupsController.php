@@ -45,7 +45,10 @@ class GroupsController extends AbstractController
      */
     public function editAction(Group $group, Request $request)
     {
-        $form = $this->get('form.factory')->create(GroupType::class, $group, ['delete' => $this->isGroupDeletable($group), 'activate' => $this->isGroupActivate($group)]);
+        $form = $this->get('form.factory')->create(GroupType::class, $group, [
+            'delete' => $this->isGroupDeletable($group),
+            'activate' => $this->isGroupActivate($group),
+        ]);
 
         if ($form->handleRequest($request) && $form->isValid()) {
             $manager = $this->get('doctrine.orm.entity_manager');
@@ -127,7 +130,7 @@ class GroupsController extends AbstractController
     {
         $this->assertXmlHttpRequest($request);
 
-        if (!$this->isGroupDeletable($group)) {
+        if (!$this->isGroupActivate($group)) {
             throw new BadRequestHttpException($this->get('translator')->trans('groups.error.not_activate'));
         }
 
@@ -150,7 +153,7 @@ class GroupsController extends AbstractController
     {
         $this->assertXmlHttpRequest($request);
 
-        if (!$this->isGroupDeletable($group)) {
+        if (!$this->isGroupActivate($group)) {
             throw new BadRequestHttpException($this->get('translator')->trans('groups.error.not_deactivate'));
         }
 

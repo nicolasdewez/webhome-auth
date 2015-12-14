@@ -3,17 +3,39 @@
 <container xmlns="http://symfony.com/schema/dic/services"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
-    <imports>
-        <import resource="security.xml"/>
-        <import resource="listeners.xml"/>
-        <import resource="forms.xml"/>
-    </imports>
-
     <services>
+        <!-- Security -->
+        <service id="app.authorization" class="AppBundle\Service\Authorization">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+        </service>
+
+        <service id="app.password" class="AppBundle\Service\Password">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument type="service" id="security.password_encoder" />
+            <argument type="service" id="webhome.validator" />
+        </service>
+
+        <service id="app.transform.authorization" class="AppBundle\Service\Transformer\AuthorizationTransformer" />
+
+        <service id="app.transform.user" class="AppBundle\Service\Transformer\UserTransformer">
+            <argument type="service" id="app.transform.authorization" />
+        </service>
+
+        <!-- Listener -->
+        <service id="oauth_event_listener" class="OAuthBundle\EventListener\AutomaticClientAcceptListener">
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <tag name="kernel.event_listener" event="fos_oauth_server.pre_authorization_process" method="onPreAuthorizationProcess" />
+        </service>
+
+        <!-- Validator -->
+        <service id="app.validator.constraints.check_current_password" class="AppBundle\Validator\Constraints\CheckCurrentPasswordValidator">
+            <argument type="service" id="security.password_encoder" />
+            <tag name="validator.constraint_validator" alias="app_check_current_password" />
+        </service>
+
         <!-- Menus -->
         <service id="app.menu.getter" class="AppBundle\Service\GetterAuthorizations">
             <argument type="service" id="security.token_storage" />
-            <argument type="service" id="app.transform.authorization" />
         </service>
 
         <service id="app.menu.builder" class="AppBundle\Service\BuilderMenuItems" />

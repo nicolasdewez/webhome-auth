@@ -2,8 +2,8 @@
 
 namespace AppBundle\Service;
 
-use AppBundle\Service\Transformer\AuthorizationTransformer;
 use Ndewez\WebHome\CommonBundle\Menu\GetterAuthorizationsInterface;
+use Ndewez\WebHome\CommonBundle\Model\Authorization;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
 /**
@@ -14,17 +14,12 @@ class GetterAuthorizations implements GetterAuthorizationsInterface
     /** @var TokenStorage*/
     private $tokenStorage;
 
-    /** @var AuthorizationTransformer */
-    private $authorizationTransformer;
-
     /**
-     * @param TokenStorage             $tokenStorage
-     * @param AuthorizationTransformer $authorizationTransformer
+     * @param TokenStorage $tokenStorage
      */
-    public function __construct(TokenStorage $tokenStorage, AuthorizationTransformer $authorizationTransformer)
+    public function __construct(TokenStorage $tokenStorage)
     {
         $this->tokenStorage = $tokenStorage;
-        $this->authorizationTransformer = $authorizationTransformer;
     }
 
     /**
@@ -40,7 +35,12 @@ class GetterAuthorizations implements GetterAuthorizationsInterface
         $authorizations = [];
         $collection = $token->getUser()->getGroup()->getAuthorizations();
         foreach ($collection as $element) {
-            $authorizations[] = $this->authorizationTransformer->entityToModel($element);
+            $authorization = new Authorization();
+            $authorization
+                ->setCodeAction($element->getCode())
+                ->setGranted(true);
+
+            $authorizations[] = $authorization;
         }
 
         return $authorizations;

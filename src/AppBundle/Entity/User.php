@@ -3,7 +3,10 @@
 namespace AppBundle\Entity;
 
 use AppBundle\Validator\Constraints as AppAssert;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation\Groups;
+use Ndewez\WebHome\CommonBundle\Model\Application;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -37,6 +40,8 @@ class User implements AdvancedUserInterface, \Serializable
      * @Assert\NotBlank(groups={"Add", "Default"})
      * @Assert\Length(min=3, max=30, groups={"Add", "Default"})
      * @Assert\Regex("/^[A-Z_0-9]+$/i", groups={"Add", "Default"})
+     *
+     * @Groups("OAuth")
      */
     private $username;
 
@@ -63,6 +68,8 @@ class User implements AdvancedUserInterface, \Serializable
      * @ORM\ManyToOne(targetEntity="Group", inversedBy="users")
      *
      * @Assert\NotBlank(groups={"Add", "Default"})
+     *
+     * @Groups("OAuth")
      */
     private $group;
 
@@ -73,6 +80,8 @@ class User implements AdvancedUserInterface, \Serializable
      *
      * @Assert\NotBlank(groups={"Add", "Account", "Default"})
      * @Assert\Length(max=255)
+     *
+     * @Groups("OAuth")
      */
     private $firstName;
 
@@ -83,6 +92,8 @@ class User implements AdvancedUserInterface, \Serializable
      *
      * @Assert\NotBlank(groups={"Add", "Account", "Default"})
      * @Assert\Length(max=255, groups={"Add", "Account", "Default"})
+     *
+     * @Groups("OAuth")
      */
     private $lastName;
 
@@ -110,8 +121,17 @@ class User implements AdvancedUserInterface, \Serializable
      * @ORM\Column(length=3)
      *
      * @Assert\Choice(choices={"fr", "en"}, groups={"Add", "Account", "Default"})
+     *
+     * @Groups("OAuth")
      */
     private $locale;
+
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\ManyToMany(targetEntity="OAuthBundle\Entity\Client")
+     */
+    private $clients;
 
     /**
      * @var bool
@@ -124,6 +144,7 @@ class User implements AdvancedUserInterface, \Serializable
     {
         $this->salt = $this->initSalt();
         $this->active = true;
+        $this->clients = new ArrayCollection();
     }
 
     /**
@@ -221,7 +242,7 @@ class User implements AdvancedUserInterface, \Serializable
     }
 
     /**
-     * Set role.
+     * Set group.
      *
      * @param Group $group
      *
@@ -235,7 +256,7 @@ class User implements AdvancedUserInterface, \Serializable
     }
 
     /**
-     * Get role.
+     * Get group.
      *
      * @return Group
      */
@@ -389,6 +410,14 @@ class User implements AdvancedUserInterface, \Serializable
     }
 
     /**
+     * @return ArrayCollection
+     */
+    public function getClients()
+    {
+        return $this->clients;
+    }
+
+    /**
      * {@inheritDoc}
      */
     public function serialize()
@@ -415,6 +444,23 @@ class User implements AdvancedUserInterface, \Serializable
     public function getRoles()
     {
         return $this->group->getAuthorizationsCodes();
+    }
+
+    /**
+     * @return array
+     */
+    public function getApplications()
+    {
+        $applications = [];
+        foreach ($this->getGroup()->getApplications() as $application) {
+            $applications[] = new Application(
+                $application->getCode(),
+                $application->getTitle(),
+                $application->getHref()
+            );
+        }
+
+        return $applications;
     }
 
     /**
@@ -456,6 +502,9 @@ class User implements AdvancedUserInterface, \Serializable
         return $this->active && $this->group->isActive();
     }
 
+    /**
+     * @return bool
+     */
     public function isSuperAdministrator()
     {
         return $this->group->isSuperAdministrator();

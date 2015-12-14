@@ -6,6 +6,7 @@ imports:
 parameters:
     locale: en
     project.name: WebHome
+    app.code: AUTH
     app.name: Auth
     app.icon: glyphicon-lock
 
@@ -70,14 +71,6 @@ doctrine:
         auto_generate_proxy_classes: "%kernel.debug%"
         naming_strategy: doctrine.orm.naming_strategy.underscore
         auto_mapping: true
-
-# Swiftmailer Configuration
-swiftmailer:
-    transport: "%mailer_transport%"
-    host:      "%mailer_host%"
-    username:  "%mailer_user%"
-    password:  "%mailer_password%"
-    spool:     { type: memory }
 
 # oAuth Configuration
 fos_oauth_server:

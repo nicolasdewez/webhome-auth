@@ -76,7 +76,7 @@ class ChangePassword
     }
 
     /**
-     * Method added to use PasswordNotContainsUsername constraint
+     * Method added to use PasswordNotContainsUsername constraint.
      *
      * @return string
      */
@@ -86,7 +86,7 @@ class ChangePassword
     }
 
     /**
-     * Method added to use CheckCurrentPassword constraint
+     * Method added to use CheckCurrentPassword constraint.
      *
      * @return UserInterface
      */

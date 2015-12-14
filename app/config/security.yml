@@ -23,6 +23,7 @@ security:
 
         oauth_authorize:
             pattern:   ^/
+            context:   main
             anonymous: true
             provider:  user_provider
             form_login:
