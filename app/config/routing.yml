@@ -17,3 +17,8 @@ fos_oauth_server_authorize:
 app:
     resource: "@AppBundle/Controller"
     type: annotation
+
+api_v0:
+    resource: "@AppBundle/Controller/V0"
+    type: annotation
+    prefix: /api/v0

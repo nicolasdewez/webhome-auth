@@ -34,7 +34,7 @@ class AccessToken extends BaseAccessToken
     /**
      * @var User
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="accessTokens")
      */
     protected $user;
 }

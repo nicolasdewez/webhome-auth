@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation\Groups;
 use Ndewez\WebHome\CommonBundle\Model\Application;
+use OAuthBundle\Entity\AccessToken;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -140,11 +141,19 @@ class User implements AdvancedUserInterface, \Serializable
      */
     private $active;
 
+    /**
+     * @var AccessToken
+     *
+     * @ORM\OneToMany(targetEntity="OAuthBundle\Entity\AccessToken", mappedBy="user")
+     */
+    protected $accessTokens;
+
     public function __construct()
     {
         $this->salt = $this->initSalt();
         $this->active = true;
         $this->clients = new ArrayCollection();
+        $this->accessTokens = new ArrayCollection();
     }
 
     /**
@@ -415,6 +424,14 @@ class User implements AdvancedUserInterface, \Serializable
     public function getClients()
     {
         return $this->clients;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getAccessTokens()
+    {
+        return $this->accessTokens;
     }
 
     /**

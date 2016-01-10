@@ -22,6 +22,7 @@ class AppKernel extends Kernel
             new OAuthBundle\OAuthBundle(),
 
             new Ndewez\WebHome\CommonBundle\NdewezWebHomeCommonBundle(),
+            new Ndewez\WebHome\AuthApiBundle\NdewezWebHomeAuthApiBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

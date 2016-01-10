@@ -15,16 +15,18 @@
             <argument type="service" id="webhome.validator" />
         </service>
 
-        <service id="app.transform.authorization" class="AppBundle\Service\Transformer\AuthorizationTransformer" />
-
-        <service id="app.transform.user" class="AppBundle\Service\Transformer\UserTransformer">
-            <argument type="service" id="app.transform.authorization" />
-        </service>
+        <service id="app.transformer.user" class="AppBundle\Service\Transformer\UserTransformer" />
 
         <!-- Listener -->
         <service id="oauth_event_listener" class="OAuthBundle\EventListener\AutomaticClientAcceptListener">
             <argument type="service" id="doctrine.orm.default_entity_manager" />
             <tag name="kernel.event_listener" event="fos_oauth_server.pre_authorization_process" method="onPreAuthorizationProcess" />
+        </service>
+
+        <service id="app.listener.locale" class="AppBundle\EventListener\LocaleListener">
+            <argument type="service" id="session" />
+            <argument>%locale%</argument>
+            <tag name="kernel.event_subscriber" />
         </service>
 
         <!-- Validator -->

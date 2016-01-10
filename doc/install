@@ -4,4 +4,5 @@ app/console doctrine:database:create
 ./bin/phinx migrate
 
 # Clients
+app/console oauth:client:create --redirect-uri="http://localhost:8000/app_dev.php" --grant-type="authorization_code" --grant-type="token" WebHome-App
 app/console oauth:client:create --redirect-uri="http://localhost:8002/app_dev.php" --grant-type="authorization_code" --grant-type="token" WebHome-Calendar
