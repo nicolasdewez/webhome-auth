@@ -1823,12 +1823,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/nicolasdewez/webhome-common.git",
-                "reference": "f9fb3d14dcf28ab2aede863511c0bc823569d807"
+                "reference": "6660d48fec2647a391807c50b2afbb6e270a6e2d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nicolasdewez/webhome-common/zipball/f9fb3d14dcf28ab2aede863511c0bc823569d807",
-                "reference": "f9fb3d14dcf28ab2aede863511c0bc823569d807",
+                "url": "https://api.github.com/repos/nicolasdewez/webhome-common/zipball/6660d48fec2647a391807c50b2afbb6e270a6e2d",
+                "reference": "6660d48fec2647a391807c50b2afbb6e270a6e2d",
                 "shasum": ""
             },
             "require": {
@@ -1849,7 +1849,7 @@
                 "MIT"
             ],
             "description": "WebHome Project - Common",
-            "time": "2016-01-10 18:23:34"
+            "time": "2016-02-12 12:10:38"
         },
         {
             "name": "paragonie/random_compat",

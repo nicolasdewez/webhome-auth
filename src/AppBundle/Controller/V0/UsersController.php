@@ -2,6 +2,8 @@
 
 namespace AppBundle\Controller\V0;
 
+use OAuthBundle\Entity\AccessToken;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,22 +15,18 @@ use Symfony\Component\HttpFoundation\Response;
 class UsersController extends Controller
 {
     /**
-     * @param string $accessToken
+     * @param AccessToken $token
      *
      * @return Response
      *
      * @Route("/access-token/{accessToken}", name="app_v0_users_access_token", methods="GET")
+     * @ParamConverter("token", class="OAuthBundle:AccessToken", options={"mapping": {"accessToken": "token"}})
      */
-    public function usersAction($accessToken)
+    public function getByAccessTokenAction(AccessToken $token)
     {
         $transformer = $this->get('app.transformer.user');
-        $token = $this->get('doctrine.orm.entity_manager')
-            ->getRepository('OAuthBundle:AccessToken')
-            ->findOneBy(['token' => $accessToken])
-        ;
-
-        if (!$token || $token->hasExpired()) {
-            return new Response('', Response::HTTP_BAD_REQUEST);
+        if ($token->hasExpired()) {
+            return new Response(sprintf('No token found (%s)', $token), Response::HTTP_NOT_FOUND);
         }
 
         return new Response(
