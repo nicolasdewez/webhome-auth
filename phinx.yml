@@ -6,9 +6,9 @@ environments:
     default_database: pgsql
     pgsql:
         adapter: pgsql
-        host: 127.0.0.1
+        host: db
         name: webhome-auth
         user: ndewez
-        pass: ndewez
+        pass: null
         port: 5432
         charset: utf8

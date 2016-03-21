@@ -1,13 +1,8 @@
 parameters:
-    database_host:     127.0.0.1
-    database_port:     ~
+    database_host:     db
+    database_port:     5432
     database_name:     webhome-auth
     database_user:     ndewez
-    database_password: ndewez
-
-    mailer_transport:  smtp
-    mailer_host:       127.0.0.1
-    mailer_user:       ~
-    mailer_password:   ~
+    database_password: null
 
     secret:            ThisTokenIsNotSoSecretChangeIt

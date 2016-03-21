@@ -9,6 +9,18 @@ class WebHomeCalendar extends AbstractMigration
      */
     public function up()
     {
+        // Client
+        $this->execute('SELECT nextval(\'client_id_seq\')');
+        $data = [
+            '1',
+            '\'6f8tjs2c4ps08os8s8ggs8kwwgksockwgwwo4kgggkckc4s84\'',
+            '\'a:1:{i:0;s:33:"http://localhost:8002/app_dev.php";}\'',
+            '\'1bcfobqhkklcw0kcks808kkskoggcko8cocg40s4wkw0w8g848\'',
+            '\'a:2:{i:0;s:18:"authorization_code";i:1;s:5:"token";}\'',
+            '\'WebHome Calendar\''
+        ];
+        $this->execute('INSERT INTO client (id, random_id, redirect_uris, secret, allowed_grant_types, name) VALUES ('.implode(',', $data).')');
+
         // Application
         $data = ['nextval(\'applications_id_seq\')', '\'CALD\'',  '\'WebHome Calendar\'', '\'http://localhost:8002/app_dev.php/\''];
         $this->execute('INSERT INTO applications (id, code, title, href) VALUES ('.implode(',', $data).')');

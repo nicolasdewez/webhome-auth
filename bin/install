@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+DIR=`dirname $(readlink -f  "$0")`
+ROOT="$DIR/.."
+
+cd $ROOT
+
+echo "Composer install"
+composer -n -q install
+
+./bin/phinx migrate
